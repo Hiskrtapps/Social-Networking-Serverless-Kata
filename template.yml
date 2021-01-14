@@ -49,6 +49,19 @@ Resources:
             Path: /comments/
             Method: post
 
+  Message:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'awscodestar-${ProjectId}_Message'
+      AttributeDefinitions:
+        - AttributeName: UserId
+          AttributeType: S
+        - AttributeName: Timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: UserId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
 
 
   GetHelloWorld:

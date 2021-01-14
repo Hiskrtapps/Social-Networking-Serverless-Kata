@@ -19,7 +19,7 @@ Resources:
   GetComments:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub '${ProjectId}-lambda-GetComments'
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetComments'
       Handler: io.github.hiskrtapps.handler.GetCommentsHandler
       Runtime: java11
       Role:
@@ -32,10 +32,10 @@ Resources:
           Properties:
             Path: /comments/
             Method: get
-  PostComments:
+  PostComment:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub '${ProjectId}-lambda-PostComment'
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostComment'
       Handler: io.github.hiskrtapps.handler.PostCommentHandler
       Runtime: java11
       Role:

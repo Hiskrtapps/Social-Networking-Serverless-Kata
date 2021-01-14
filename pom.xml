@@ -5,7 +5,7 @@
     <artifactId>HelloWorld</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>A sample Java Spring web service created with AWS CodeStar.</name>
+    <name>Social Networking Serverless Kata</name>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>

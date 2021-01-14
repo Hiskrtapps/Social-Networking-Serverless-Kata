@@ -16,6 +16,6 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        return new GatewayResponse(new JSONObject().put("Output", input.keySet()).toString(), headers, 200);
+        return new GatewayResponse(new JSONObject().put("Output", input.get("body")).toString(), headers, 200);
     }
 }

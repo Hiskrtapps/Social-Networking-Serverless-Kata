@@ -6,7 +6,7 @@ Transform:
 Parameters:
   ProjectId:
     Type: String
-    Description: AWS CodeStar projectID used to associate new resources to team members
+    Description: ProjectID used to associate new resources to team members
   CodeDeployRole:
     Type: String
     Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
@@ -16,6 +16,41 @@ Parameters:
     Default: ''
 
 Resources:
+  GetComments:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${ProjectId}-lambda-GetComments'
+      Handler: io.github.hiskrtapps.handler.GetCommentsHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /comments/
+            Method: get
+  PostComments:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${ProjectId}-lambda-PostComment'
+      Handler: io.github.hiskrtapps.handler.PostCommentHandler
+      Runtime: java11
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /comments/
+            Method: post
+
+
+
   GetHelloWorld:
     Type: AWS::Serverless::Function
     Properties:

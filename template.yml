@@ -52,7 +52,7 @@ Resources:
   Message:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub 'awscodestar-${ProjectId}_Message'
+      TableName: !Sub 'awscodestar-${ProjectId}_Messages'
       AttributeDefinitions:
         - AttributeName: status
           AttributeType: S

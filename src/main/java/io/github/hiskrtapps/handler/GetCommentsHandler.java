@@ -36,7 +36,7 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
         ScanRequest scanRequest = new ScanRequest()
                 .withTableName("awscodestar-claranet-snsk_Message")
-                //.withLimit(5)
+                .withLimit(2)
                 .withProjectionExpression("userId, createdAt, message")
         ;
 

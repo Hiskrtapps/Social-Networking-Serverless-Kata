@@ -38,13 +38,13 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
                 .withTableName("awscodestar-claranet-snsk_Messages");
 
         JSONArray ja = new JSONArray();
-        ScanResult result = client.scan(scanRequest);
+        ScanResult result = client.scan(scanRequest).withCount(2);
         for (Map<String, AttributeValue> item : result.getItems()){
             ja.put(new JSONObject(item));
         }
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        return new GatewayResponse(new JSONObject().put("Output", ja).toString(), headers, 200);
+        return new GatewayResponse(new JSONObject().put("Messages", ja).toString(), headers, 200);
     }
 }

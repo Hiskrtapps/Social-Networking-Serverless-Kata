@@ -33,13 +33,9 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDB dynamoDB = new DynamoDB(client);
 
-        System.out.println("input: " + input);
         JSONObject body = new JSONObject(input);
-        System.out.println("body: " + body);
         String text = body.getString("text");
-        System.out.println("text: " + text);
         String userId = body.getString("userId");
-        System.out.println("userId: " + userId);
 
         Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Messages");
         Item item = new Item()
@@ -53,7 +49,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        return new GatewayResponse(new JSONObject().put("Output", input.get("body")).toString(), headers, 200);
+        return new GatewayResponse(new JSONObject().put("Output", input).toString(), headers, 200);
     }
 
 }

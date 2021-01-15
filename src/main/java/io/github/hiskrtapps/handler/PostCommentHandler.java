@@ -2,6 +2,7 @@ package io.github.hiskrtapps.handler;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
@@ -9,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.aws.codestar.projecttemplates.GatewayResponse;
+import io.github.hiskrtapps.model.Message;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONObject;
@@ -34,14 +36,19 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-        DynamoDB dynamoDB = new DynamoDB(client);
 
-        JSONObject body = new JSONObject(input);
-        String message = body.getString("message");
-        String userId = body.getString("userId");
+        DynamoDBMapper mapper = new DynamoDBMapper(client);
 
         LocalDateTime now = now();
         long recentness = ZonedDateTime.of(now, ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        JSONObject body = new JSONObject(input);
+        //String message = body.getString("message");
+        String userId = body.getString("userId");
+
+        /*
+        DynamoDB dynamoDB = new DynamoDB(client);
+
 
         Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Message");
         Item item = new Item()
@@ -52,6 +59,15 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         // Write the item to the table
         PutItemOutcome outcome = table.putItem(item);
+        */
+
+        Message message = new Message();
+        message.setRecentness(recentness);
+        message.setMessage(body.getString("message"));
+        message.setCreatedAt(ISO_DATE_TIME.format(now()));
+        message.setUserId(body.getString("userId"));
+
+        mapper.save(message);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");

@@ -22,7 +22,8 @@ Resources:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetComments'
       Handler: io.github.hiskrtapps.handler.GetCommentsHandler
       Runtime: java11
-      Timeout: 15
+      MemorySize: 512
+      Timeout: 20
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole
@@ -39,7 +40,8 @@ Resources:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostComment'
       Handler: io.github.hiskrtapps.handler.PostCommentHandler
       Runtime: java11
-      Timeout: 15
+      MemorySize: 512
+      Timeout: 20
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole

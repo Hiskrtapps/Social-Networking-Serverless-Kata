@@ -9,13 +9,20 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.aws.codestar.projecttemplates.GatewayResponse;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.time.LocalDateTime.now;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
 /**
  * Handler for requests to Lambda function.
@@ -37,7 +44,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         Table table = dynamoDB.getTable("Messages");
         Item item = new Item()
                 .withPrimaryKey("status", "OK")
-                .withString("timestamp", LocalDate.now().format(DateTimeFormatter.ISO_INSTANT))
+                .withString("timestamp", ISO_DATE_TIME.format(now()))
                 .withString("text", text)
                 .withString("userId", userId);
 
@@ -48,4 +55,5 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         headers.put("Content-Type", "application/json");
         return new GatewayResponse(new JSONObject().put("Output", input.get("body")).toString(), headers, 200);
     }
+
 }

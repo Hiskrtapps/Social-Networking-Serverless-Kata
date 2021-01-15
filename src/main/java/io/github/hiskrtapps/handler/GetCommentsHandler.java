@@ -35,10 +35,12 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 
         ScanRequest scanRequest = new ScanRequest()
-                .withTableName("awscodestar-claranet-snsk_Messages");
+                .withTableName("awscodestar-claranet-snsk_Messages")
+                .withLimit(2)
+                .withProjectionExpression("userId, text, timestamp");
 
         JSONArray ja = new JSONArray();
-        ScanResult result = client.scan(scanRequest).withCount(2);
+        ScanResult result = client.scan(scanRequest);
         for (Map<String, AttributeValue> item : result.getItems()){
             ja.put(new JSONObject(item));
         }

@@ -58,12 +58,12 @@ Resources:
     Properties:
       TableName: !Sub 'awscodestar-${ProjectId}_Message'
       AttributeDefinitions:
-        - AttributeName: status
-            AttributeType: S
+        - AttributeName: id
+          AttributeType: S
         - AttributeName: recentness
           AttributeType: N
       KeySchema:
-        - AttributeName: status
+        - AttributeName: id
           KeyType: HASH
         - AttributeName: recentness
           KeyType: RANGE

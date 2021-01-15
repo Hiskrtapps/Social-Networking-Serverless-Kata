@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
@@ -44,10 +45,10 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Message");
         Item item = new Item()
-                .withPrimaryKey("status", "OK", "recentness", recentness)
+                .withPrimaryKey("id", UUID.randomUUID(), "recentness", recentness)
+                .withString("userId", userId)
                 .withString("createdAt", ISO_DATE_TIME.format(now()))
-                .withString("message", message)
-                .withString("userId", userId);
+                .withString("message", message);
 
         // Write the item to the table
         PutItemOutcome outcome = table.putItem(item);
@@ -55,21 +56,6 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         return new GatewayResponse(new JSONObject().put("Output", input).toString(), headers, 200);
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        long currentMilliseconds = System.currentTimeMillis();
-        System.out.println(currentMilliseconds);
-        System.out.println(ZonedDateTime.of(now(), ZoneId.systemDefault()).toInstant().toEpochMilli());
-        System.out.println(Long.MAX_VALUE - currentMilliseconds);
-
-        Thread.sleep(10000);
-
-
-        currentMilliseconds = System.currentTimeMillis();
-        System.out.println(currentMilliseconds);
-        System.out.println(ZonedDateTime.of(now(), ZoneId.systemDefault()).toInstant().toEpochMilli());
-        System.out.println(Long.MAX_VALUE - currentMilliseconds);
     }
 
 }

@@ -33,11 +33,9 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
     public Object handleRequest(final Object input, final Context context) {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-        DynamoDB dynamoDB = new DynamoDB(client);
 
-        Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Messages");
         ScanRequest scanRequest = new ScanRequest()
-                .withTableName("Reply");
+                .withTableName("awscodestar-claranet-snsk_Messages");
 
         JSONArray ja = new JSONArray();
         ScanResult result = client.scan(scanRequest);

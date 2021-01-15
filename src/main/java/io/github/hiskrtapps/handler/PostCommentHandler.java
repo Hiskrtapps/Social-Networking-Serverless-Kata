@@ -27,15 +27,18 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDB dynamoDB = new DynamoDB(client);
 
         JSONObject body = new JSONObject(input.get("body"));
+        System.out.println("body: " + body);
         String text = body.getString("text");
+        System.out.println("text: " + text);
         String userId = body.getString("userId");
+        System.out.println("userId: " + userId);
 
         Table table = dynamoDB.getTable("Messages");
         Item item = new Item()
                 .withPrimaryKey("status", "OK")
                 .withString("timestamp", LocalDate.now().format(DateTimeFormatter.ISO_INSTANT))
                 .withString("text", text)
-                .withString("userId", text);
+                .withString("userId", userId);
 
         // Write the item to the table
         PutItemOutcome outcome = table.putItem(item);

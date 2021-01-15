@@ -52,4 +52,17 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         return new GatewayResponse(new JSONObject().put("Output", input).toString(), headers, 200);
     }
 
+    public static void main(String[] args) throws InterruptedException {
+        long currentMilliseconds = System.currentTimeMillis();
+        System.out.println(currentMilliseconds);
+        System.out.println(Long.MAX_VALUE - currentMilliseconds);
+
+        Thread.sleep(10000);
+
+
+        currentMilliseconds = System.currentTimeMillis();
+        System.out.println(currentMilliseconds);
+        System.out.println(Long.MAX_VALUE - currentMilliseconds);
+    }
+
 }

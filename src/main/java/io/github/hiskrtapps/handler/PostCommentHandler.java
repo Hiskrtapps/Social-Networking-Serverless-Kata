@@ -39,27 +39,10 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
-        LocalDateTime now = now();
+        LocalDateTime now = now().withNano(0);
         long recentness = ZonedDateTime.of(now, ZoneId.systemDefault()).toInstant().toEpochMilli();
 
         JSONObject body = new JSONObject(input);
-        //String message = body.getString("message");
-        String userId = body.getString("userId");
-
-        /*
-        DynamoDB dynamoDB = new DynamoDB(client);
-
-
-        Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Message");
-        Item item = new Item()
-                .withPrimaryKey("id", UUID.randomUUID(), "recentness", recentness)
-                .withString("userId", userId)
-                .withString("createdAt", ISO_DATE_TIME.format(now()))
-                .withString("message", message);
-
-        // Write the item to the table
-        PutItemOutcome outcome = table.putItem(item);
-        */
 
         Message message = new Message();
         message.setRecentness(recentness);

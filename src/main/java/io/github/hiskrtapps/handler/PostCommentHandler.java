@@ -34,14 +34,14 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDB dynamoDB = new DynamoDB(client);
 
         JSONObject body = new JSONObject(input);
-        String text = body.getString("text");
+        String message = body.getString("message");
         String userId = body.getString("userId");
 
         Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Messages");
         Item item = new Item()
                 .withPrimaryKey("status", "OK")
                 .withString("timestamp", ISO_DATE_TIME.format(now()))
-                .withString("text", text)
+                .withString("message", message)
                 .withString("userId", userId);
 
         // Write the item to the table

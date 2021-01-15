@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,9 +39,12 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         String message = body.getString("message");
         String userId = body.getString("userId");
 
-        Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Messages");
+        LocalDateTime now = now();
+        long recentness = ZonedDateTime.of(now, ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Message");
         Item item = new Item()
-                .withPrimaryKey("status", "OK")
+                .withPrimaryKey("status", "OK", "recentness", recentness)
                 .withString("createdAt", ISO_DATE_TIME.format(now()))
                 .withString("message", message)
                 .withString("userId", userId);
@@ -55,6 +60,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
     public static void main(String[] args) throws InterruptedException {
         long currentMilliseconds = System.currentTimeMillis();
         System.out.println(currentMilliseconds);
+        System.out.println(ZonedDateTime.of(now(), ZoneId.systemDefault()).toInstant().toEpochMilli());
         System.out.println(Long.MAX_VALUE - currentMilliseconds);
 
         Thread.sleep(10000);
@@ -62,6 +68,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         currentMilliseconds = System.currentTimeMillis();
         System.out.println(currentMilliseconds);
+        System.out.println(ZonedDateTime.of(now(), ZoneId.systemDefault()).toInstant().toEpochMilli());
         System.out.println(Long.MAX_VALUE - currentMilliseconds);
     }
 

@@ -39,7 +39,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
-        LocalDateTime now = now().withNano(0);
+        LocalDateTime now = now();
         long recentness = ZonedDateTime.of(now, ZoneId.systemDefault()).toInstant().toEpochMilli();
 
         JSONObject body = new JSONObject(input);

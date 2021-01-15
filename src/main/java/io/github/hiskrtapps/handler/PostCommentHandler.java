@@ -27,8 +27,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDB dynamoDB = new DynamoDB(client);
 
         System.out.println("input: " + input);
-        System.out.println("input.get(\"body\"): " + input.get("body"));
-        JSONObject body = new JSONObject(input.get("body"));
+        JSONObject body = new JSONObject(input);
         System.out.println("body: " + body);
         String text = body.getString("text");
         System.out.println("text: " + text);

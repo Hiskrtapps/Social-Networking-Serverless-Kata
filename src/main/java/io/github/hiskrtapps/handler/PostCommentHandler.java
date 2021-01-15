@@ -41,7 +41,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         String userId = body.getString("userId");
         System.out.println("userId: " + userId);
 
-        Table table = dynamoDB.getTable("Messages");
+        Table table = dynamoDB.getTable("awscodestar-claranet-snsk_Messages");
         Item item = new Item()
                 .withPrimaryKey("status", "OK")
                 .withString("timestamp", ISO_DATE_TIME.format(now()))

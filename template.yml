@@ -56,7 +56,7 @@ Resources:
   Message:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub 'awscodestar-${ProjectId}_Messages'
+      TableName: !Sub 'awscodestar-${ProjectId}_Message'
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
@@ -80,40 +80,6 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
-
-  GetHelloWorld:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetHelloWorld'
-      Handler: com.aws.codestar.projecttemplates.handler.HelloWorldHandler
-      Runtime: java11
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /
-            Method: get
-
-  PostHelloWorld:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostHelloWorld'
-      Handler: com.aws.codestar.projecttemplates.handler.HelloWorldHandler
-      Runtime: java11
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /
-            Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

@@ -93,19 +93,8 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
-  #SNSKUserPool:
-  #  Type: AWS::Cognito::UserPool
-  #  Properties:
-  #    UserPoolName: !Ref CognitoUserPoolName
-  #    Policies:
-  #      PasswordPolicy:
-  #        MinimumLength: 8
-  #    UsernameAttributes:
-  #      - email
-  #    Schema:
-  #      - AttributeDataType: String
-  #        Name: email
-  #        Required: false
+  SNSKUserPool:
+    Type: AWS::Cognito::UserPool
 
   #SNSKUserPoolClient:
   #  Type: AWS::Cognito::UserPoolClient

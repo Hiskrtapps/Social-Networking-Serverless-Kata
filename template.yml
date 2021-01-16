@@ -77,7 +77,7 @@ Resources:
             - AttributeName: recentness
               KeyType: RANGE
           Projection:
-            ProjectionType: ALL
+            ProjectionType: KEYS_ONLY
       BillingMode: PAY_PER_REQUEST
 
 

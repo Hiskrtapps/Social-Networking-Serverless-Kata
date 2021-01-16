@@ -56,13 +56,11 @@ Resources:
   Message:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub 'awscodestar-${ProjectId}_Messages'
+      TableName: !Sub 'awscodestar-${ProjectId}_Message'
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
         - AttributeName: status
-          AttributeType: S
-        - AttributeName: createdAt
           AttributeType: S
         - AttributeName: recentness
           AttributeType: N

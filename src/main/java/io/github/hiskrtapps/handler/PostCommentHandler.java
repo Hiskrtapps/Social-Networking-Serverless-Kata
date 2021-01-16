@@ -55,6 +55,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         message.setMessage(body.getString("message"));
         message.setCreatedAt(ISO_DATE_TIME.format(now()));
         message.setUserId(body.getString("userId"));
+        message.setStatus("OK");
 
         mapper.save(message);
 

@@ -23,6 +23,7 @@ import com.aws.codestar.projecttemplates.GatewayResponse;
 import io.github.hiskrtapps.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Attr;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,10 +44,16 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         context.getLogger().log(String.format("new JSONObject(input): %s", new JSONObject(input)));
         context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
-        String exclusiveStartKey = null;
+        Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
         JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
-            exclusiveStartKey = new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+            JSONObject jExclusiveStartKey = new JSONObject(new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey"));
+            exclusiveStartKey = Map.of(
+                    "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("S")),
+                    "recentness", new AttributeValue().withN(jExclusiveStartKey.getJSONObject("recentness").getString("N")),
+                    "status", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("status").getString("S"))
+
+            );
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
@@ -57,8 +64,8 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withLimit(4).withIndexName("MoreRecentsFirst");
 
-        if (exclusiveStartKey != null) {
-            scanExpression.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)));
+        if (exclusiveStartKey != null || !exclusiveStartKey.isEmpty()) {
+            scanExpression.withExclusiveStartKey(exclusiveStartKey);
         }
 
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
@@ -71,7 +78,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         if (scanResult.getLastEvaluatedKey() != null) {
-            headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
+            headers.put("x-LastEvaluatedKey", new JSONObject(scanResult.getLastEvaluatedKey()).toString());
         }
 
         //return new GatewayResponse(ja.toString(), headers, 200);

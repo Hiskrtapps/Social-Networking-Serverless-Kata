@@ -49,9 +49,9 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         if (!jInput.isNull("headers")) {
             JSONObject jExclusiveStartKey = new JSONObject(jInput.getJSONObject("headers").getString("x-LastEvaluatedKey"));
             exclusiveStartKey = Map.of(
-                    "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("S")),
-                    "recentness", new AttributeValue().withN(jExclusiveStartKey.getJSONObject("recentness").getString("N")),
-                    "status", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("status").getString("S"))
+                    "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("s")),
+                    "recentness", new AttributeValue().withN(jExclusiveStartKey.getJSONObject("recentness").getString("n")),
+                    "status", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("status").getString("s"))
 
             );
         }

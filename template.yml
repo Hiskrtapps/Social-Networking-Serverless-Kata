@@ -27,7 +27,6 @@ Resources:
         Authorizers:
           SNSKAuthorizer:
             UserPoolArn: !GetAtt SNSKUserPool.Arn
-
   GetCommentsApi:
     Type: AWS::Serverless::Api
     Properties:

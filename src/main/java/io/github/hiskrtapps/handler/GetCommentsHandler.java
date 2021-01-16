@@ -73,7 +73,7 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         if (scanResult.getLastEvaluatedKey() != null) {
-            headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").toString());
+            headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
         return new GatewayResponse(new JSONObject().put("Messages", ja).toString(), headers, 200);
 

@@ -24,6 +24,7 @@ import io.github.hiskrtapps.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,16 +58,14 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
-        //Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
-        //exclusiveStartKey.put("id", new AttributeValue((String)null));
-
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression().withLimit(2)//.withExclusiveStartKey(null)
-        ;
-
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                .withLimit(2)
+                .withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS("")));
+        
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
         JSONArray ja = new JSONArray();
-        for (Message item : scanResult.getResults()){
+        for (Message item : scanResult.getResults()) {
             ja.put(new JSONObject(item));
         }
 

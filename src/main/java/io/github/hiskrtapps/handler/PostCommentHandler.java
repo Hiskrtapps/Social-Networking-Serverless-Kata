@@ -35,6 +35,9 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 public class PostCommentHandler implements RequestHandler<Map<Object, Object>, Object> {
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
+
+        System.out.println(input);
+
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);

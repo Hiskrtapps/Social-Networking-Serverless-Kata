@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
@@ -56,17 +57,25 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        //Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
+        //exclusiveStartKey.put("id", new AttributeValue((String)null));
 
-        List<Message> scanResult = mapper.scan(Message.class, scanExpression);
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression().withLimit(2)//.withExclusiveStartKey(null)
+        ;
+
+        ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
         JSONArray ja = new JSONArray();
-        for (Message item : scanResult){
+        for (Message item : scanResult.getResults()){
             ja.put(new JSONObject(item));
         }
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        if (scanResult.getLastEvaluatedKey() != null) {
+            headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").toString());
+        }
         return new GatewayResponse(new JSONObject().put("Messages", ja).toString(), headers, 200);
+
     }
 }

@@ -39,6 +39,9 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
     public Object handleRequest(final Object input, final Context context) {
+        context.getLogger().log(String.format("Input: %s", input));
+        context.getLogger().log(String.format("new JSONObject(input): %s", new JSONObject(input)));
+        context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
         //String exclusiveStartKey = new JSONObject().put("I", input).getJSONObject("I").getJSONObject("headers").getString("x-LastEvaluatedKey");
 
@@ -79,8 +82,6 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
         if (scanResult.getLastEvaluatedKey() != null) {
             headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
-        //return new GatewayResponse(new JSONObject().put("Messages", ja).toString(), headers, 200);
-        return new GatewayResponse(input.toString(), headers, 200);
-
+        return new GatewayResponse(ja.toString(), headers, 200);
     }
 }

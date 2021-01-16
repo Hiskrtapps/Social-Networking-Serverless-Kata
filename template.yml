@@ -16,6 +16,40 @@ Parameters:
     Default: ''
 
 Resources:
+
+  SNSKUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref CognitoUserPoolName
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+
+  SNSKUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref SNSKUserPool
+      ClientName: !Ref CognitoUserPoolClientName
+      GenerateSecret: false
+
+  PostCommentsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: SNSKAuthorizer
+        Authorizers:
+          SNSKAuthorizer:
+            UserPoolArn: !GetAtt SNSKUserPool.Arn
+
+
   GetComments:
     Type: AWS::Serverless::Function
     Properties:
@@ -50,6 +84,7 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
+            RestApiId: !Ref PostCommentsApi
             Path: /comments/
             Method: post
 

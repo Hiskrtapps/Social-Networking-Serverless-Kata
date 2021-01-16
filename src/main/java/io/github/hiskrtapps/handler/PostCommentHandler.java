@@ -51,7 +51,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         //JSONObject body = new JSONObject(input);
 
         Message message = new Message();
-        message.setRecentness(recentness);
+        message.setRecentness(Long.MAX_VALUE - recentness);
         message.setMessage(body.getString("message"));
         message.setCreatedAt(ISO_DATE_TIME.format(now()));
         message.setUserId(body.getString("userId"));

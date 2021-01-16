@@ -47,6 +47,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
         JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
+            /*
             JSONObject jExclusiveStartKey = new JSONObject(jInput.getJSONObject("headers").getString("x-LastEvaluatedKey"));
             exclusiveStartKey = Map.of(
                     "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("s")),
@@ -54,6 +55,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
                     "status", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("status").getString("s"))
 
             );
+            */
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();

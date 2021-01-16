@@ -60,7 +60,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         if (exclusiveStartKey != null) {
             scanExpression.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)));
         }
-                
+
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
         JSONArray ja = new JSONArray();
@@ -74,6 +74,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
             headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
 
-        return new GatewayResponse(ja.toString(), headers, 200);
+        //return new GatewayResponse(ja.toString(), headers, 200);
+        return new GatewayResponse(scanResult.getLastEvaluatedKey().toString(), headers, 200);
     }
 }

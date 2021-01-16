@@ -39,6 +39,10 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
     public Object handleRequest(final Object input, final Context context) {
+
+        String exclusiveStartKey = new JSONObject().put("Messages", input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+
+
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 
         /*
@@ -76,7 +80,7 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
             headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
         //return new GatewayResponse(new JSONObject().put("Messages", ja).toString(), headers, 200);
-        return new GatewayResponse(new JSONObject().put("Messages", input).toString(), headers, 200);
+        return new GatewayResponse(exclusiveStartKey, headers, 200);
 
     }
 }

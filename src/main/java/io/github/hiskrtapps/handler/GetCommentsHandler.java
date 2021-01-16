@@ -43,7 +43,11 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         context.getLogger().log(String.format("new JSONObject(input): %s", new JSONObject(input)));
         context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
-        String exclusiveStartKey = new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+        String exclusiveStartKey = null;
+        JSONObject jInput = new JSONObject(input);
+        if (!jInput.isNull("headers")) {
+            exclusiveStartKey = new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+        }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 

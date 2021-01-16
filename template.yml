@@ -62,7 +62,7 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
-            #RestApiId: !Ref PostCommentApi
+            RestApiId: !Ref PostCommentApi
             Path: /comments/
             Method: post
 

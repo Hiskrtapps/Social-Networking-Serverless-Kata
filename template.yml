@@ -56,7 +56,7 @@ Resources:
   Message:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub 'awscodestar-${ProjectId}_Message'
+      TableName: !Sub 'awscodestar-${ProjectId}_Messages'
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
@@ -74,8 +74,8 @@ Resources:
           KeySchema:
             - AttributeName: status
               KeyType: HASH
-          #  - AttributeName: recentness
-          #    KeyType: RANGE
+            - AttributeName: recentness
+              KeyType: RANGE
           Projection:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST

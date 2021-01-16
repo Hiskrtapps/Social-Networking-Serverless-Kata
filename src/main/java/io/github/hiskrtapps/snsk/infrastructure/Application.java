@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates;
+package io.github.hiskrtapps.snsk.infrastructure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

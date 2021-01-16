@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates;
+package io.github.hiskrtapps.snsk.infrastructure;
 
 import java.util.Collections;
 import java.util.HashMap;

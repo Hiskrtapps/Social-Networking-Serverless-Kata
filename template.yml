@@ -20,7 +20,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetComments'
-      Handler: io.github.hiskrtapps.handler.GetCommentsHandler
+      Handler: io.github.hiskrtapps.snsk.handler.GetCommentsHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20
@@ -38,7 +38,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostComment'
-      Handler: io.github.hiskrtapps.handler.PostCommentHandler
+      Handler: io.github.hiskrtapps.snsk.handler.PostCommentHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20

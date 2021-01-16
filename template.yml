@@ -60,6 +60,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
         - AttributeName: recentness
           AttributeType: N
       KeySchema:
@@ -75,7 +77,9 @@ Resources:
             - AttributeName: recentness
               KeyType: RANGE
           Projection:
-            ProjectionType: KEYS_ONLY
+            NonKeyAttributes:
+              - id
+            ProjectionType: INCLUDE
       BillingMode: PAY_PER_REQUEST
 
 

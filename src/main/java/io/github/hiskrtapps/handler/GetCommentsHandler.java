@@ -44,6 +44,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
         //String exclusiveStartKey = new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+        String index = new JSONObject(input).getJSONObject("headers").getString("x-index");
 
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
@@ -66,7 +67,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withLimit(4).withIndexName("CreatedAtSorted")
+                .withLimit(4).withIndexName(index)
                 //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)))
         ;
 

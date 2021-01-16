@@ -78,8 +78,10 @@ Resources:
               KeyType: RANGE
           Projection:
             NonKeyAttributes:
-              - id
-            ProjectionType: INCLUDE
+              - message
+              - createdAt
+              - userId
+            ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
 

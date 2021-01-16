@@ -47,7 +47,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
         JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
-            JSONObject jExclusiveStartKey = new JSONObject(new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey"));
+            JSONObject jExclusiveStartKey = new JSONObject(jInput.getJSONObject("headers").getString("x-LastEvaluatedKey"));
             exclusiveStartKey = Map.of(
                     "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("S")),
                     "recentness", new AttributeValue().withN(jExclusiveStartKey.getJSONObject("recentness").getString("N")),
@@ -64,7 +64,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withLimit(4).withIndexName("MoreRecentsFirst");
 
-        if (exclusiveStartKey != null || !exclusiveStartKey.isEmpty()) {
+        if (exclusiveStartKey != null && !exclusiveStartKey.isEmpty()) {
             scanExpression.withExclusiveStartKey(exclusiveStartKey);
         }
 

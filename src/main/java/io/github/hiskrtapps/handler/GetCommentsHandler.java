@@ -81,7 +81,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
             headers.put("x-LastEvaluatedKey", new JSONObject(scanResult.getLastEvaluatedKey()).toString());
         }
 
-        return new GatewayResponse(jInput.getJSONObject("headers").getString("x-LastEvaluatedKey"), headers, 200);
+        return new GatewayResponse(jInput.getJSONObject("headers").toString(), headers, 200);
         //return new GatewayResponse(ja.toString(), headers, 200);
     }
 }

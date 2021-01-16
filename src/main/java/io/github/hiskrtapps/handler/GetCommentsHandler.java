@@ -66,7 +66,7 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withLimit(4)
+                .withLimit(4).withIndexName("AllByRecentness")
                 //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)))
         ;
 

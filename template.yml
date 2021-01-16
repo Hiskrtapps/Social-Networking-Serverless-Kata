@@ -95,6 +95,13 @@ Resources:
 
   SNSKUserPool:
     Type: AWS::Cognito::UserPool
+    Properties:
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
 
   #SNSKUserPoolClient:
   #  Type: AWS::Cognito::UserPoolClient

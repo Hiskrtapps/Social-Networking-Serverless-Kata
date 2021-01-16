@@ -60,8 +60,6 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
-        - AttributeName: status
-          AttributeType: S
         - AttributeName: recentness
           AttributeType: N
       KeySchema:

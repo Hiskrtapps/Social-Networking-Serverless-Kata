@@ -48,7 +48,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         LocalDateTime now = now();
         long recentness = ZonedDateTime.of(now, ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-        JSONObject body = new JSONObject(input);
+        //JSONObject body = new JSONObject(input);
 
         Message message = new Message();
         message.setRecentness(recentness);

@@ -17,17 +17,7 @@ Parameters:
 
 Resources:
 
-  PostCommentApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: Prod
-      Cors: "'*'"
-      Auth:
-        DefaultAuthorizer: SNSKAuthorizer
-        Authorizers:
-          SNSKAuthorizer:
-            UserPoolArn: !GetAtt SNSKUserPool.Arn
-  GetCommentsApi:
+  SNSKApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
@@ -54,7 +44,7 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-   #         RestApiId: !Ref GetCommentsApi
+            RestApiId: !Ref SNSKApi
             Path: /comments/
             Method: get
   PostComment:
@@ -73,7 +63,7 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
-    #        RestApiId: !Ref PostCommentApi
+            RestApiId: !Ref SNSKApi
             Path: /comments/
             Method: post
 

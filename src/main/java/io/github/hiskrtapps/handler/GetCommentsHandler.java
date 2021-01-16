@@ -47,15 +47,13 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
         JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
-            /*
-            JSONObject jExclusiveStartKey = new JSONObject(jInput.getJSONObject("headers").getString("x-LastEvaluatedKey"));
+            String[] s = jInput.getJSONObject("headers").getString("x-LastEvaluatedKey").split(";");
             exclusiveStartKey = Map.of(
-                    "id", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("id").getString("s")),
-                    "recentness", new AttributeValue().withN(jExclusiveStartKey.getJSONObject("recentness").getString("n")),
-                    "status", new AttributeValue().withS(jExclusiveStartKey.getJSONObject("status").getString("s"))
+                    "id", new AttributeValue().withS(s[0]),
+                    "recentness", new AttributeValue().withN(s[1]),
+                    "status", new AttributeValue().withS(s[2])
 
             );
-            */
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
@@ -80,10 +78,12 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         if (scanResult.getLastEvaluatedKey() != null) {
-            headers.put("x-LastEvaluatedKey", new JSONObject(scanResult.getLastEvaluatedKey()).toString());
+            String id = scanResult.getLastEvaluatedKey().get("id").getS();
+            String recentness = scanResult.getLastEvaluatedKey().get("recentness").getN();
+            String status = scanResult.getLastEvaluatedKey().get("status").getS();
+            headers.put("x-LastEvaluatedKey", String.join(";", id, recentness, status));
         }
 
-        return new GatewayResponse(jInput.toString(), headers, 200);
-        //return new GatewayResponse(ja.toString(), headers, 200);
+        return new GatewayResponse(ja.toString(), headers, 200);
     }
 }

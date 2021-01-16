@@ -36,8 +36,6 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
 
-        System.out.println(input);
-
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
@@ -57,7 +55,7 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        return new GatewayResponse(new JSONObject().put("Output", input).toString(), headers, 200);
+        return new GatewayResponse(new JSONObject().put("Output", input.toString()).toString(), headers, 200);
     }
 
 }

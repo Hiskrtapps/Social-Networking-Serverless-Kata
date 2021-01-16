@@ -72,19 +72,11 @@ Resources:
         - AttributeName: recentness
           KeyType: RANGE
       GlobalSecondaryIndexes:
-        - IndexName: AllByRecentness
+        - IndexName: MoreRecentsFirst
           KeySchema:
             - AttributeName: status
               KeyType: HASH
             - AttributeName: recentness
-              KeyType: RANGE
-          Projection:
-            ProjectionType: ALL
-        - IndexName: CreatedAtSorted
-          KeySchema:
-            - AttributeName: status
-              KeyType: HASH
-            - AttributeName: createdAt
               KeyType: RANGE
           Projection:
             ProjectionType: ALL

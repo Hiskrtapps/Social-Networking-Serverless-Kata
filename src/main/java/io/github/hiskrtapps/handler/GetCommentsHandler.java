@@ -44,34 +44,18 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
         //String exclusiveStartKey = new JSONObject(input).getJSONObject("headers").getString("x-LastEvaluatedKey");
-        String index = new JSONObject(input).getJSONObject("headers").getString("x-index");
+        //String index = new JSONObject(input).getJSONObject("headers").getString("x-index");
 
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 
-        /*
-        ScanRequest scanRequest = new ScanRequest()
-                .withTableName("awscodestar-claranet-snsk_Message")
-                //.withLimit(2)
-                .withProjectionExpression("userId, createdAt, message")
-        ;
-
-        ScanResult result = client.scan(scanRequest);
-
-        JSONArray ja = new JSONArray();
-        for (Map<String, AttributeValue> item : result.getItems()){
-            ja.put(new JSONObject(item));
-        }
-*/
 
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withLimit(4)//.withIndexName(index)
+                .withLimit(4).withIndexName("MoreRecentsFirst")
                 //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)))
         ;
-
-
 
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
@@ -85,13 +69,6 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         if (scanResult.getLastEvaluatedKey() != null) {
             headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
-
-
-        //scanExpression = new DynamoDBScanExpression()
-        //        .withLimit(2)
-        //        .withExclusiveStartKey(scanResult.getLastEvaluatedKey());
-        //scanResult = mapper.scanPage(Message.class, scanExpression);
-
 
         return new GatewayResponse(ja.toString(), headers, 200);
     }

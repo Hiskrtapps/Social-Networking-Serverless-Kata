@@ -96,6 +96,10 @@ Resources:
   SNSKUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
+      UserPoolName: SNSK
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
       UsernameAttributes:
         - email
       Schema:
@@ -103,12 +107,11 @@ Resources:
           Name: email
           Required: false
 
-  #SNSKUserPoolClient:
-  #  Type: AWS::Cognito::UserPoolClient
-  #  Properties:
-  #    UserPoolId: !Ref SNSKUserPool
-  #    ClientName: !Ref CognitoUserPoolClientName
-  #    GenerateSecret: false
+  SNSKUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref SNSKUserPool
+      ClientName: SNSK
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

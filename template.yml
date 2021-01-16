@@ -60,6 +60,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
         - AttributeName: recentness
           AttributeType: N
       KeySchema:
@@ -67,6 +69,15 @@ Resources:
           KeyType: HASH
         - AttributeName: recentness
           KeyType: RANGE
+      GlobalSecondaryIndex:
+        - IndexName: AllByRecentness
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: recentness
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
 

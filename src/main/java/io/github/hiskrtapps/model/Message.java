@@ -25,6 +25,9 @@ public class Message {
     @DynamoDBAttribute
     private String message;
 
+    @DynamoDBAttribute
+    private String status;
+
     public String getId() {
         return id;
     }
@@ -64,4 +67,13 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

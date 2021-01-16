@@ -56,7 +56,6 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
                 .withLimit(4).withIndexName("MoreRecentsFirst")
                 //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)))
         ;
-
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
         JSONArray ja = new JSONArray();

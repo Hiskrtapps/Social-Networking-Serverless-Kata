@@ -69,7 +69,7 @@ Resources:
           KeyType: HASH
         - AttributeName: recentness
           KeyType: RANGE
-      GlobalSecondaryIndex:
+      GlobalSecondaryIndexes:
         - IndexName: AllByRecentness
           KeySchema:
             - AttributeName: status

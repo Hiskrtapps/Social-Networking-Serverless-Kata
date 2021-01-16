@@ -114,6 +114,12 @@ Resources:
       UserPoolId: !Ref SNSKUserPool
       ClientName: SNSK
 
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: "snsk"
+
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role

@@ -60,7 +60,8 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withLimit(2)
-                .withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS("")));
+                //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS("")))
+        ;
 
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 

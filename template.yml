@@ -93,25 +93,25 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
-  #SNSKUserPool:
-  #  Type: AWS::Cognito::UserPool
-  #  Properties:
-  #    UserPoolName: SNSK
-  #    Policies:
-  #      PasswordPolicy:
-  #        MinimumLength: 8
-  #    UsernameAttributes:
-  #      - email
-  #    Schema:
-  #      - AttributeDataType: String
-  #        Name: email
-  #        Required: false
+  SNSKUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: SNSK
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
 
-  #SNSKUserPoolClient:
-  #  Type: AWS::Cognito::UserPoolClient
-  #  Properties:
-  #    UserPoolId: !Ref SNSKUserPool
-  #    ClientName: SNSK
+  SNSKUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref SNSKUserPool
+      ClientName: SNSK
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

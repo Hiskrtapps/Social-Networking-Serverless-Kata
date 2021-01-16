@@ -17,16 +17,16 @@ Parameters:
 
 Resources:
 
-  #PostCommentApi:
-  #  Type: AWS::Serverless::Api
-  #  Properties:
-  #    StageName: Prod
-  #    Cors: "'*'"
-  #    Auth:
-  #      DefaultAuthorizer: SNSKAuthorizer
-  #      Authorizers:
-  #        SNSKAuthorizer:
-  #          UserPoolArn: !GetAtt SNSKUserPool.Arn
+  PostCommentApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: SNSKAuthorizer
+        Authorizers:
+          SNSKAuthorizer:
+            UserPoolArn: !GetAtt SNSKUserPool.Arn
 
   GetComments:
     Type: AWS::Serverless::Function

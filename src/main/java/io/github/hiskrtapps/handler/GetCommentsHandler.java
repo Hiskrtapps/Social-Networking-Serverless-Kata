@@ -67,8 +67,8 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withLimit(2)
-        //.withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey))
-                ;
+                .withExclusiveStartKey(Collections.singletonMap("id", new AttributeValue().withS(exclusiveStartKey)))
+        ;
 
         ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
 
@@ -82,7 +82,6 @@ public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, O
         if (scanResult.getLastEvaluatedKey() != null) {
             headers.put("x-LastEvaluatedKey", scanResult.getLastEvaluatedKey().get("id").getS());
         }
-        return new GatewayResponse(exclusiveStartKey, headers, 200);
-        //return new GatewayResponse(ja.toString(), headers, 200);
+        return new GatewayResponse(ja.toString(), headers, 200);
     }
 }

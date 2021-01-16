@@ -55,7 +55,7 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref PostCommentsApi
+            RestApiId: !Ref GetCommentsApi
             Path: /comments/
             Method: get
   PostComment:

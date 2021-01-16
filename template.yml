@@ -17,27 +17,6 @@ Parameters:
 
 Resources:
 
-  SNSKUserPool:
-    Type: AWS::Cognito::UserPool
-    Properties:
-      UserPoolName: !Ref CognitoUserPoolName
-      Policies:
-        PasswordPolicy:
-          MinimumLength: 8
-      UsernameAttributes:
-        - email
-      Schema:
-        - AttributeDataType: String
-          Name: email
-          Required: false
-
-  SNSKUserPoolClient:
-    Type: AWS::Cognito::UserPoolClient
-    Properties:
-      UserPoolId: !Ref SNSKUserPool
-      ClientName: !Ref CognitoUserPoolClientName
-      GenerateSecret: false
-
   PostCommentsApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -48,7 +27,6 @@ Resources:
         Authorizers:
           SNSKAuthorizer:
             UserPoolArn: !GetAtt SNSKUserPool.Arn
-
 
   GetComments:
     Type: AWS::Serverless::Function
@@ -114,6 +92,27 @@ Resources:
           Projection:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
+
+  SNSKUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref CognitoUserPoolName
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+
+  SNSKUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref SNSKUserPool
+      ClientName: !Ref CognitoUserPoolClientName
+      GenerateSecret: false
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

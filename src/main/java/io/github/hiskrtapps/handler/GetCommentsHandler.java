@@ -40,7 +40,7 @@ public class GetCommentsHandler implements RequestHandler<Object, Object> {
 
     public Object handleRequest(final Object input, final Context context) {
 
-        //String exclusiveStartKey = new JSONObject().put("Messages", input).getJSONObject("headers").getString("x-LastEvaluatedKey");
+        String exclusiveStartKey = new JSONObject().put("I", input).getJSONObject("I").getJSONObject("headers").getString("x-LastEvaluatedKey");
 
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();

@@ -107,12 +107,12 @@ Resources:
           Name: email
           Required: false
 
-  SNSKUserPoolClient:
-    Type: AWS::Cognito::UserPoolClient
-    Properties:
-      UserPoolId: !Ref SNSKUserPool
-      ClientName: !Ref CognitoUserPoolClientName
-      GenerateSecret: false
+  #SNSKUserPoolClient:
+  #  Type: AWS::Cognito::UserPoolClient
+  #  Properties:
+  #    UserPoolId: !Ref SNSKUserPool
+  #    ClientName: !Ref CognitoUserPoolClientName
+  #    GenerateSecret: false
 
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda

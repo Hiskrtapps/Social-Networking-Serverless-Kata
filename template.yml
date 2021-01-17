@@ -114,10 +114,10 @@ Resources:
       UserPoolId: !Ref SNSKUserPool
       ClientName: SNSK
 
-  UserPoolDomain:
+  SNSKUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
-      UserPoolId: !Ref UserPool
+      UserPoolId: !Ref SNSKUserPool
       Domain: "snsk"
 
   LambdaExecutionRole:

@@ -115,6 +115,7 @@ Resources:
       ClientName: SNSK
       ExplicitAuthFlows:
         - ALLOW_USER_PASSWORD_AUTH
+        - REFRESH_TOKEN_AUTH
 
   SNSKUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain

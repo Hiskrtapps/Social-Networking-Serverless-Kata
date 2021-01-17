@@ -23,14 +23,8 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
 
     public final Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
-        try {
-            final O output = execute(input);
-            return new GatewayResponse(buildBody(output), buildHeaders(output), 200);
-        } catch (final Throwable t) {
-            final String stackTrace = stackTrace(t);
-            context.getLogger().log("stackTrace: " + stackTrace);
-            return new GatewayResponse(format("{\"stacktrace: \" %s}", stackTrace), singletonMap("Content-Type", APPLICATION_JSON_VALUE), 400);
-        }
+        final O output = execute(input);
+        return new GatewayResponse(buildBody(output), buildHeaders(output), 200);
     }
 
     protected abstract O execute(Map<Object, Object> input);
@@ -41,13 +35,6 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
 
     protected final DynamoDBMapper dynamoDB() {
         return new DynamoDBMapper(standard().build());
-    }
-
-    private String stackTrace(final Throwable t) {
-        final StringWriter sw = new StringWriter();
-        final PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        return sw.toString();
     }
 
     /**

@@ -30,8 +30,6 @@ Resources:
 
  NewSNSKApi:
     Type: AWS::Serverless::Api
-    Properties:
-      StageName: Prod
 
   NewGetComment:
     Type: 'AWS::ApiGateway::Method'

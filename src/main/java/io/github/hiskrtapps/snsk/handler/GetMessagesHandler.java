@@ -3,7 +3,6 @@ package io.github.hiskrtapps.snsk.handler;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.github.hiskrtapps.snsk.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Handler for requests to Lambda function.
  */
-public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> implements RequestHandler<Map<Object, Object>, Object> {
+public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> {
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 
@@ -27,7 +26,7 @@ public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultP
     private static final int PAGE_LIMIT_DEFAULT = 10;
 
     @Override
-    protected final ScanResultPage<Message> execute(Map<Object, Object> input) {
+    protected final ScanResultPage<Message> execute(final Map<Object, Object> input) {
         return dynamoDB().scanPage(Message.class, scanExpression(input));
     }
 
@@ -69,7 +68,7 @@ public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultP
         return headers;
     }
 
-    private Map<String, AttributeValue> readExclusiveStartKey(Map<Object, Object> input) {
+    private Map<String, AttributeValue> readExclusiveStartKey(final Map<Object, Object> input) {
         final JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
             final JSONObject headers = jInput.getJSONObject("headers");
@@ -88,7 +87,7 @@ public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultP
         }
     }
 
-    private int readPageLimit(Map<Object, Object> input) {
+    private int readPageLimit(final Map<Object, Object> input) {
         final JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
             final JSONObject headers = jInput.getJSONObject("headers");

@@ -3,26 +3,19 @@ package io.github.hiskrtapps.snsk.handler;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.json.JSONObject;
-import org.springframework.http.MediaType;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
-import static java.lang.String.format;
-import static java.util.Collections.singletonMap;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Handler for requests to Lambda function.
  */
 public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Object, Object>, Object> {
 
-    public Object handleRequest(final Map<Object, Object> input, final Context context) {
+    public final Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
         final O output = execute(input);
         return new GatewayResponse(buildBody(output), buildHeaders(output), 200);
@@ -41,10 +34,12 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
     /**
      * POJO containing response object for API Gateway.
      */
-    public static class GatewayResponse {
+    public static final class GatewayResponse {
 
         private final String body;
+
         private final Map<String, String> headers;
+
         private final int statusCode;
 
         private GatewayResponse(final String body, final Map<String, String> headers, final int statusCode) {
@@ -66,7 +61,7 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
         }
     }
 
-    public static class ResultMessage {
+    public static final class ResultMessage {
 
         private final String id;
 

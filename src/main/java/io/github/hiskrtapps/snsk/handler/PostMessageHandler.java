@@ -25,7 +25,7 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 public class PostMessageHandler implements RequestHandler<Map<Object, Object>, Object> {
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
-        saveMessage(buildMessage(input));
+        context.getLogger().log("Input: " + input);
         return response();
     }
 

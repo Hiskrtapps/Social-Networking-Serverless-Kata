@@ -94,6 +94,18 @@ Resources:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
 
+  MessageBackup:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'awscodestar-${ProjectId}_MessageBackup'
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
   SNSKUserPool:
     Type: AWS::Cognito::UserPool
     Properties:

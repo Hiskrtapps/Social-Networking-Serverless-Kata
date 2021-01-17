@@ -1,17 +1,18 @@
 package io.github.hiskrtapps.snsk.handler;
 
 import io.github.hiskrtapps.snsk.model.Message;
+import io.github.hiskrtapps.snsk.model.MessageBackup;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Long.MAX_VALUE;
 import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
+import static java.time.ZonedDateTime.of;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -24,6 +25,7 @@ public final class PostMessageHandler extends AbstractMessageHandler<Message> {
     protected final Message execute(final Map<Object, Object> input) {
         final Message message = buildMessage(input);
         dynamoDB().save(message);
+        dynamoDB().save(buildMessageBackup(message));
         return message;
     }
 
@@ -42,7 +44,7 @@ public final class PostMessageHandler extends AbstractMessageHandler<Message> {
     private Message buildMessage(final Map<Object, Object> input) {
         final JSONObject jInput = new JSONObject(input);
         final LocalDateTime now = now();
-        long recentness = ZonedDateTime.of(now, systemDefault()).toInstant().toEpochMilli();
+        long recentness = of(now, systemDefault()).toInstant().toEpochMilli();
         final Message message = new Message();
         message.setRecentness(MAX_VALUE - recentness);
         message.setMessage(new JSONObject(jInput.getString("body")).getString("message"));
@@ -50,6 +52,16 @@ public final class PostMessageHandler extends AbstractMessageHandler<Message> {
         message.setUserId(retrieveUserId(jInput.getJSONObject("headers").getString("Authorization")));
         message.setStatus("OK");
         return message;
+    }
+
+    private MessageBackup buildMessageBackup(final Message message) {
+        final MessageBackup messageBackup = new MessageBackup();
+        messageBackup.setId(message.getId());
+        messageBackup.setMessage(message.getMessage());
+        messageBackup.setCreatedAt(message.getCreatedAt());
+        messageBackup.setUserId(message.getUserId());
+        messageBackup.setStatus(message.getStatus());
+        return messageBackup;
     }
 
     private String retrieveUserId(final String token) {

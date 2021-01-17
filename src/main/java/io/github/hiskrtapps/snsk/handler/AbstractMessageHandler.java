@@ -53,15 +53,15 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
             this.headers = Collections.unmodifiableMap(new HashMap<>(headers));
         }
 
-        private String getBody() {
+        public String getBody() {
             return body;
         }
 
-        private Map<String, String> getHeaders() {
+        public Map<String, String> getHeaders() {
             return headers;
         }
 
-        private int getStatusCode() {
+        public int getStatusCode() {
             return statusCode;
         }
     }

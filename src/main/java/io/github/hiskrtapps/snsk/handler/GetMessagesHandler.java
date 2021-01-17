@@ -32,7 +32,7 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
         final ScanResultPage<Message> result = new DynamoDBMapper(standard().build()).scanPage(Message.class, buildScanExpression(input));
-        return new GatewayResponse(buildBody(result), buildHeaders(result.getLastEvaluatedKey()), 200);
+        return new GatewayResponse(buildBody(result), buildHeaders(result), 200);
     }
 
     private String buildBody(ScanResultPage<Message> result) {
@@ -44,13 +44,13 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
         return ja.toString();
     }
 
-    private Map<String, String> buildHeaders(Map<String, AttributeValue> lastEvaluatedKey) {
+    private Map<String, String> buildHeaders(ScanResultPage<Message> result) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        if (lastEvaluatedKey != null) {
-            final String id = lastEvaluatedKey.get("id").getS();
-            final String recentness = lastEvaluatedKey.get("recentness").getN();
-            final String status = lastEvaluatedKey.get("status").getS();
+        if (result.getLastEvaluatedKey() != null) {
+            final String id = result.getLastEvaluatedKey().get("id").getS();
+            final String recentness = result.getLastEvaluatedKey().get("recentness").getN();
+            final String status = result.getLastEvaluatedKey().get("status").getS();
             headers.put(LAST_EVALUATED_KEY_HEADER, join(";", id, recentness, status));
         }
         return headers;

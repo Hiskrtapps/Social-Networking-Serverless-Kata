@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value = { "id", "recentness", "status" }, allowSetters = true)
 @DynamoDBTable(tableName = "awscodestar-claranet-snsk_Message")
 public class Message {
 
@@ -30,7 +29,7 @@ public class Message {
     @DynamoDBAttribute
     private String status;
 
-    public String getId() {
+    protected String getId() {
         return id;
     }
 
@@ -38,7 +37,7 @@ public class Message {
         this.id = id;
     }
 
-    public Long getRecentness() {
+    protected Long getRecentness() {
         return recentness;
     }
 

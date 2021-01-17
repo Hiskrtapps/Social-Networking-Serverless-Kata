@@ -13,8 +13,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
+import static java.lang.Integer.parseInt;
 import static java.lang.String.join;
 
 /**
@@ -24,36 +26,46 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 
-    private static final String PAGINATION_DISABLED_HEADER = "x-snsk-pagination-disabled";
+    private static final String PAGE_LIMIT_HEADER = "x-snsk-page-limit";
 
-    private static final int PAGE_LIMIT = 10;
+    private static final int PAGE_LIMIT_DEFAULT = 10;
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
-
         final ScanResultPage<Message> result = new DynamoDBMapper(standard().build()).scanPage(Message.class, buildScanExpression(input));
+        return new GatewayResponse(buildBody(result), buildHeaders(result.getLastEvaluatedKey()), 200);
+    }
 
+    private String buildBody(ScanResultPage<Message> result) {
         final JSONArray ja = new JSONArray();
-        for (final Message item : result.getResults()) {
-            ja.put(new JSONObject(item));
+        for (final Message message : result.getResults()) {
+            ja.put(buildResultItem(message));
         }
+        return ja.toString();
+    }
+
+    private Map<String, String> buildHeaders(Map<String, AttributeValue> lastEvaluatedKey) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        if (result.getLastEvaluatedKey() != null) {
-            final String id = result.getLastEvaluatedKey().get("id").getS();
-            final String recentness = result.getLastEvaluatedKey().get("recentness").getN();
-            final String status = result.getLastEvaluatedKey().get("status").getS();
-            headers.put("LAST_EVALUATED_KEY_HEADER", join(";", id, recentness, status));
+        if (lastEvaluatedKey != null) {
+            final String id = lastEvaluatedKey.get("id").getS();
+            final String recentness = lastEvaluatedKey.get("recentness").getN();
+            final String status = lastEvaluatedKey.get("status").getS();
+            headers.put(LAST_EVALUATED_KEY_HEADER, join(";", id, recentness, status));
         }
-        return new GatewayResponse(ja.toString(), headers, 200);
+        return headers;
+    }
+
+    private JSONObject buildResultItem(Message message) {
+        final JSONObject jMessage = new JSONObject(message);
+        return jMessage;
     }
 
     private DynamoDBScanExpression buildScanExpression(Map<Object, Object> input) {
         final Map<String, AttributeValue> exclusiveStartKey = readExclusiveStartKey(input);
-        final Boolean paginationDisabled = readPaginationDisabled(input);
-        final DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withLimit(PAGE_LIMIT);
-        if (!paginationDisabled) {
-            scanExpression.withIndexName("MoreRecentsFirst");
+        final int pageLimit = readPageLimit(input);
+        final DynamoDBScanExpression scanExpression = new DynamoDBScanExpression().withIndexName("MoreRecentsFirst");
+        if (pageLimit > 0) {
+            scanExpression.withLimit(pageLimit);
         }
         if (exclusiveStartKey != null) {
             scanExpression.withExclusiveStartKey(exclusiveStartKey);
@@ -62,39 +74,35 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
     }
 
     private Map<String, AttributeValue> readExclusiveStartKey(Map<Object, Object> input) {
-        final Map<String, AttributeValue> exclusiveStartKey;
         final JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
             final JSONObject headers = jInput.getJSONObject("headers");
-            if (!headers.isNull("LAST_EVALUATED_KEY_HEADER")) {
+            if (!headers.isNull(LAST_EVALUATED_KEY_HEADER)) {
                 String[] tokens = headers.getString(LAST_EVALUATED_KEY_HEADER).split(";");
-                exclusiveStartKey = Map.of(
+                return Map.of(
                         "id", new AttributeValue().withS(tokens[0]),
                         "recentness", new AttributeValue().withN(tokens[1]),
                         "status", new AttributeValue().withS(tokens[2])
                 );
             } else {
-                exclusiveStartKey = null;
+                return null;
             }
         } else {
-            exclusiveStartKey = null;
+            return null;
         }
-        return exclusiveStartKey;
     }
 
-    private boolean readPaginationDisabled(Map<Object, Object> input) {
-        final boolean paginationDisabled;
+    private int readPageLimit(Map<Object, Object> input) {
         final JSONObject jInput = new JSONObject(input);
         if (!jInput.isNull("headers")) {
             final JSONObject headers = jInput.getJSONObject("headers");
-            if (!headers.isNull("PAGINATION_DISABLED_HEADER")) {
-                paginationDisabled = Boolean.parseBoolean(headers.getString(PAGINATION_DISABLED_HEADER));
+            if (!headers.isNull(PAGE_LIMIT_HEADER)) {
+                return parseInt(headers.getString(PAGE_LIMIT_HEADER));
             } else {
-                paginationDisabled = false;
+                return PAGE_LIMIT_DEFAULT;
             }
         } else {
-            paginationDisabled = false;
+            return PAGE_LIMIT_DEFAULT;
         }
-        return paginationDisabled;
     }
 }

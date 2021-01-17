@@ -113,6 +113,7 @@ Resources:
     Properties:
       UserPoolId: !Ref SNSKUserPool
       ClientName: SNSK
+      ExplicitAuthFlows: ALLOW_USER_PASSWORD_AUTH
 
   SNSKUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain

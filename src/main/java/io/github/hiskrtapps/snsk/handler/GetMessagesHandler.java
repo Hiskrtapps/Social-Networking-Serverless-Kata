@@ -30,6 +30,7 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
     private static final int PAGE_LIMIT_DEFAULT = 10;
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
+        context.getLogger().log("Input: " + input);
         final ScanResultPage<Message> result = new DynamoDBMapper(standard().build()).scanPage(Message.class, buildScanExpression(input));
         return new GatewayResponse(buildBody(result), buildHeaders(result.getLastEvaluatedKey()), 200);
     }

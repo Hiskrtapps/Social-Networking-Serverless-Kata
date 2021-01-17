@@ -26,6 +26,7 @@ public class PostMessageHandler implements RequestHandler<Map<Object, Object>, O
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
+        saveMessage(buildMessage(input));
         return response();
     }
 

@@ -22,11 +22,11 @@ Resources:
     Properties:
       StageName: Prod
       Cors: "'*'"
-      Auth:
-        DefaultAuthorizer: SNSKAuthorizer
-        Authorizers:
-          SNSKAuthorizer:
-            UserPoolArn: !GetAtt SNSKUserPool.Arn
+      #Auth:
+      #  DefaultAuthorizer: SNSKAuthorizer
+      #  Authorizers:
+      #    SNSKAuthorizer:
+      #      UserPoolArn: !GetAtt SNSKUserPool.Arn
 
   GetComments:
     Type: AWS::Serverless::Function

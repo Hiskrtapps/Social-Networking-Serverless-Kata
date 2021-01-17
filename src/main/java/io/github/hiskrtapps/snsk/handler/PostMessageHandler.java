@@ -1,5 +1,6 @@
 package io.github.hiskrtapps.snsk.handler;
 
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.github.hiskrtapps.snsk.model.Message;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Handler for requests to Lambda function.
  */
-public class PostMessageHandler extends AbstractMessageHandler<Message> {
+public class PostMessageHandler extends AbstractMessageHandler<Message> implements RequestHandler<Map<Object, Object>, Object> {
 
     @Override
     protected final Message execute(final Map<Object, Object> input) {

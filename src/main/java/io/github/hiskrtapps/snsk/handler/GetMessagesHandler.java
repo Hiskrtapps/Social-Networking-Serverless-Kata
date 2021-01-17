@@ -3,6 +3,7 @@ package io.github.hiskrtapps.snsk.handler;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.github.hiskrtapps.snsk.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Handler for requests to Lambda function.
  */
-public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> {
+public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> implements RequestHandler<Map<Object, Object>, Object> {
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 

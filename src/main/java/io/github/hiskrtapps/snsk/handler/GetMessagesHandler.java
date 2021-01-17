@@ -1,12 +1,8 @@
 package io.github.hiskrtapps.snsk.handler;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import io.github.hiskrtapps.snsk.infrastructure.GatewayResponse;
 import io.github.hiskrtapps.snsk.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,59 +10,62 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.join;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Handler for requests to Lambda function.
  */
-public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, Object> {
+public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> {
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 
-    private static final String PAGE_LIMIT_HEADER = "x-snsk-page-limit";
+    private static final String PAGE_LIMIT_HEADER = "x-snsk-page-Limit";
 
     private static final int PAGE_LIMIT_DEFAULT = 10;
 
-    public Object handleRequest(final Map<Object, Object> input, final Context context) {
-        context.getLogger().log("Input: " + input);
-        final ScanResultPage<Message> result = new DynamoDBMapper(standard().build()).scanPage(Message.class, buildScanExpression(input));
-        return new GatewayResponse(buildBody(result), buildHeaders(result), 200);
+    @Override
+    protected final ScanResultPage<Message> execute(Map<Object, Object> input) {
+        return dynamoDB().scanPage(Message.class, scanExpression(input));
     }
 
-    private String buildBody(ScanResultPage<Message> result) {
+    private DynamoDBScanExpression scanExpression(final Map<Object, Object> input) {
+        final DynamoDBScanExpression scanExpression = new DynamoDBScanExpression().withIndexName("MoreRecentsFirst");
+
+        final int pageLimit = readPageLimit(input);
+        if (pageLimit > 0) {
+            scanExpression.withLimit(pageLimit);
+        }
+
+        final Map<String, AttributeValue> exclusiveStartKey = readExclusiveStartKey(input);
+        if (exclusiveStartKey != null) {
+            scanExpression.withExclusiveStartKey(exclusiveStartKey);
+        }
+
+        return scanExpression;
+    }
+
+    @Override
+    protected final String buildBody(final ScanResultPage<Message> result) {
         final JSONArray ja = new JSONArray();
         for (final Message m : result.getResults()) {
-            final Message responseMessage = new Message(null, null, m.getUserId(), m.getCreatedAt(), m.getMessage(), null);
-            ja.put(new JSONObject(responseMessage));
+            ja.put(new JSONObject(new ResultMessage(m.getId(), m.getUserId(), m.getCreatedAt(), m.getMessage())));
         }
         return ja.toString();
     }
 
-    private Map<String, String> buildHeaders(ScanResultPage<Message> result) {
+    @Override
+    protected final Map<String, String> buildHeaders(final ScanResultPage<Message> result) {
         final Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+        headers.put("Content-Type", APPLICATION_JSON_VALUE);
         if (result.getLastEvaluatedKey() != null) {
-            final String id = result.getLastEvaluatedKey().get("id").getS();
-            final String recentness = result.getLastEvaluatedKey().get("recentness").getN();
-            final String status = result.getLastEvaluatedKey().get("status").getS();
+            String id = result.getLastEvaluatedKey().get("id").getS();
+            String recentness = result.getLastEvaluatedKey().get("recentness").getN();
+            String status = result.getLastEvaluatedKey().get("status").getS();
             headers.put(LAST_EVALUATED_KEY_HEADER, join(";", id, recentness, status));
         }
         return headers;
-    }
-
-    private DynamoDBScanExpression buildScanExpression(Map<Object, Object> input) {
-        final Map<String, AttributeValue> exclusiveStartKey = readExclusiveStartKey(input);
-        final int pageLimit = readPageLimit(input);
-        final DynamoDBScanExpression scanExpression = new DynamoDBScanExpression().withIndexName("MoreRecentsFirst");
-        if (pageLimit > 0) {
-            scanExpression.withLimit(pageLimit);
-        }
-        if (exclusiveStartKey != null) {
-            scanExpression.withExclusiveStartKey(exclusiveStartKey);
-        }
-        return scanExpression;
     }
 
     private Map<String, AttributeValue> readExclusiveStartKey(Map<Object, Object> input) {
@@ -101,4 +100,5 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
             return PAGE_LIMIT_DEFAULT;
         }
     }
+
 }

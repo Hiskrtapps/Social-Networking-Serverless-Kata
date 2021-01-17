@@ -28,16 +28,11 @@ Resources:
           SNSKAuthorizer:
             UserPoolArn: !GetAtt SNSKUserPool.Arn
 
- NewSNSKApi:
+  NewSNSKApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
       Cors: "'*'"
-      Auth:
-        DefaultAuthorizer: SNSKAuthorizer
-        Authorizers:
-          SNSKAuthorizer:
-            UserPoolArn: !GetAtt SNSKUserPool.Arn
 
   NewGetComment:
     Type: 'AWS::ApiGateway::Method'

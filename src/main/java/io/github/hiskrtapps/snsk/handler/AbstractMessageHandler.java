@@ -3,6 +3,7 @@ package io.github.hiskrtapps.snsk.handler;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 
 import java.io.PrintWriter;
@@ -65,7 +66,7 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
         }
     }
 
-    protected static final class ResultMessage {
+    public static final class ResultMessage {
 
         private final String id;
 

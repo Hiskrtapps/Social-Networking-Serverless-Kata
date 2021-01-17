@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Object, Object>, Object> {
 
-    public final Object handleRequest(final Map<Object, Object> input, final Context context) {
+    public Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
         final O output = execute(input);
         return new GatewayResponse(buildBody(output), buildHeaders(output), 200);

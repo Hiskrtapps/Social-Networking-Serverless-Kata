@@ -83,19 +83,19 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
             this.message = message;
         }
 
-        public final String getId() {
+        public String getId() {
             return id;
         }
 
-        public final String getUserId() {
+        public String getUserId() {
             return userId;
         }
 
-        public final String getCreatedAt() {
+        public String getCreatedAt() {
             return createdAt;
         }
 
-        public final String getMessage() {
+        public String getMessage() {
             return message;
         }
 

@@ -20,7 +20,7 @@ import static java.lang.String.join;
 /**
  * Handler for requests to Lambda function.
  */
-public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, Object> {
+public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, Object> {
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 

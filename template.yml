@@ -28,11 +28,11 @@ Resources:
           SNSKAuthorizer:
             UserPoolArn: !GetAtt SNSKUserPool.Arn
 
-  GetComments:
+  GetMessagess:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetComments'
-      Handler: io.github.hiskrtapps.snsk.handler.GetCommentsHandler
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetMessages'
+      Handler: io.github.hiskrtapps.snsk.handler.GetMessagesHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20
@@ -45,13 +45,13 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref SNSKSecuredApi
-            Path: /comments/
+            Path: /messages/
             Method: get
-  PostComment:
+  PostMessage:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostComment'
-      Handler: io.github.hiskrtapps.snsk.handler.PostCommentHandler
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostMessage'
+      Handler: io.github.hiskrtapps.snsk.handler.PostMessageHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20
@@ -64,7 +64,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref SNSKSecuredApi
-            Path: /comments/
+            Path: /messages/
             Method: post
 
   Message:

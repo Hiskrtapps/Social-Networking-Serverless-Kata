@@ -22,7 +22,7 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 /**
  * Handler for requests to Lambda function.
  */
-public class PostCommentHandler implements RequestHandler<Map<Object, Object>, Object> {
+public class PostMessageHandler implements RequestHandler<Map<Object, Object>, Object> {
 
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
         saveMessage(buildMessage(input));

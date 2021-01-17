@@ -41,7 +41,7 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
     /**
      * POJO containing response object for API Gateway.
      */
-    public static final class GatewayResponse {
+    public static class GatewayResponse {
 
         private final String body;
         private final Map<String, String> headers;
@@ -66,7 +66,7 @@ public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Ob
         }
     }
 
-    public static final class ResultMessage {
+    public static class ResultMessage {
 
         private final String id;
 

@@ -32,7 +32,6 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
-      Cors: "'*'"
 
   NewGetComment:
     Type: 'AWS::ApiGateway::Method'

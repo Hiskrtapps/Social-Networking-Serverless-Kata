@@ -1,7 +1,5 @@
 package io.github.hiskrtapps.snsk.handler;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
@@ -16,58 +14,87 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.time.LocalDateTime.now;
+import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
+import static java.lang.String.join;
 
 /**
  * Handler for requests to Lambda function.
  */
 public class GetCommentsHandler implements RequestHandler<Map<Object, Object>, Object> {
 
+    private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
+
+    private static final String PAGINATION_DISABLED_HEADER = "x-snsk-pagination-disabled";
+
+    private static final int PAGE_LIMIT = 10;
+
     public Object handleRequest(final Map<Object, Object> input, final Context context) {
-        context.getLogger().log(String.format("Input: %s", input));
-        context.getLogger().log(String.format("new JSONObject(input): %s", new JSONObject(input)));
-        context.getLogger().log(String.format("new JSONObject().put(\"I\", input): %s", new JSONObject().put("I", input)));
 
-        Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
-        JSONObject jInput = new JSONObject(input);
-        if (!jInput.isNull("headers")) {
-            String[] s = jInput.getJSONObject("headers").getString("x-LastEvaluatedKey").split(";");
-            exclusiveStartKey = Map.of(
-                    "id", new AttributeValue().withS(s[0]),
-                    "recentness", new AttributeValue().withN(s[1]),
-                    "status", new AttributeValue().withS(s[2])
+        final ScanResultPage<Message> result = new DynamoDBMapper(standard().build()).scanPage(Message.class, buildScanExpression(input));
 
-            );
-        }
-
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-
-
-        DynamoDBMapper mapper = new DynamoDBMapper(client);
-
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withLimit(4).withIndexName("MoreRecentsFirst");
-
-        if (exclusiveStartKey != null && !exclusiveStartKey.isEmpty()) {
-            scanExpression.withExclusiveStartKey(exclusiveStartKey);
-        }
-
-        ScanResultPage<Message> scanResult = mapper.scanPage(Message.class, scanExpression);
-
-        JSONArray ja = new JSONArray();
-        for (Message item : scanResult.getResults()) {
+        final JSONArray ja = new JSONArray();
+        for (final Message item : result.getResults()) {
             ja.put(new JSONObject(item));
         }
-
-        Map<String, String> headers = new HashMap<>();
+        final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        if (scanResult.getLastEvaluatedKey() != null) {
-            String id = scanResult.getLastEvaluatedKey().get("id").getS();
-            String recentness = scanResult.getLastEvaluatedKey().get("recentness").getN();
-            String status = scanResult.getLastEvaluatedKey().get("status").getS();
-            headers.put("x-LastEvaluatedKey", String.join(";", id, recentness, status));
+        if (result.getLastEvaluatedKey() != null) {
+            final String id = result.getLastEvaluatedKey().get("id").getS();
+            final String recentness = result.getLastEvaluatedKey().get("recentness").getN();
+            final String status = result.getLastEvaluatedKey().get("status").getS();
+            headers.put("LAST_EVALUATED_KEY_HEADER", join(";", id, recentness, status));
         }
-
         return new GatewayResponse(ja.toString(), headers, 200);
+    }
+
+    private DynamoDBScanExpression buildScanExpression(Map<Object, Object> input) {
+        final Map<String, AttributeValue> exclusiveStartKey = readExclusiveStartKey(input);
+        final Boolean paginationDisabled = readPaginationDisabled(input);
+        final DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                .withLimit(PAGE_LIMIT);
+        if (!paginationDisabled) {
+            scanExpression.withIndexName("MoreRecentsFirst");
+        }
+        if (exclusiveStartKey != null) {
+            scanExpression.withExclusiveStartKey(exclusiveStartKey);
+        }
+        return scanExpression;
+    }
+
+    private Map<String, AttributeValue> readExclusiveStartKey(Map<Object, Object> input) {
+        final Map<String, AttributeValue> exclusiveStartKey;
+        final JSONObject jInput = new JSONObject(input);
+        if (!jInput.isNull("headers")) {
+            final JSONObject headers = jInput.getJSONObject("headers");
+            if (!headers.isNull("LAST_EVALUATED_KEY_HEADER")) {
+                String[] tokens = headers.getString(LAST_EVALUATED_KEY_HEADER).split(";");
+                exclusiveStartKey = Map.of(
+                        "id", new AttributeValue().withS(tokens[0]),
+                        "recentness", new AttributeValue().withN(tokens[1]),
+                        "status", new AttributeValue().withS(tokens[2])
+                );
+            } else {
+                exclusiveStartKey = null;
+            }
+        } else {
+            exclusiveStartKey = null;
+        }
+        return exclusiveStartKey;
+    }
+
+    private boolean readPaginationDisabled(Map<Object, Object> input) {
+        final boolean paginationDisabled;
+        final JSONObject jInput = new JSONObject(input);
+        if (!jInput.isNull("headers")) {
+            final JSONObject headers = jInput.getJSONObject("headers");
+            if (!headers.isNull("PAGINATION_DISABLED_HEADER")) {
+                paginationDisabled = Boolean.parseBoolean(headers.getString(PAGINATION_DISABLED_HEADER));
+            } else {
+                paginationDisabled = false;
+            }
+        } else {
+            paginationDisabled = false;
+        }
+        return paginationDisabled;
     }
 }

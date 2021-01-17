@@ -1,6 +1,5 @@
 package io.github.hiskrtapps.snsk.handler;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -10,7 +9,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,12 +47,12 @@ public class PostCommentHandler implements RequestHandler<Map<Object, Object>, O
         message.setRecentness(MAX_VALUE - recentness);
         message.setMessage(new JSONObject(jInput.getString("body")).getString("message"));
         message.setCreatedAt(ISO_DATE_TIME.format(now));
-        message.setUserId(userId(jInput.getJSONObject("headers").getString("authorization")));
+        message.setUserId(retrieveUserId(jInput.getJSONObject("headers").getString("authorization")));
         message.setStatus("OK");
         return message;
     }
 
-    private String userId(final String token) {
+    private String retrieveUserId(final String token) {
         return new JSONObject(new String(new Base64(true).decode(token.split("\\.")[1]))).getString("email");
     }
 

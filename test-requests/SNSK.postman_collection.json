@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "bbf70c99-de93-4a26-b807-1220ab5e821e",
+		"name": "SNSK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "InitiateAuth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff04538f-f819-45d3-9d32-e7d644cb6714",
+						"exec": [
+							"// retrieve variables from the response\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"IdToken\", jsonData.AuthenticationResult.IdToken);\r",
+							"pm.environment.set(\"AccessToken\", jsonData.AuthenticationResult.AccessToken);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "81d32c49-52e5-4251-83ea-a104502d73c3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-amz-target",
+						"type": "text",
+						"value": "AWSCognitoIdentityProviderService.InitiateAuth"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/x-amz-json-1.1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"AuthParameters\" : {\r\n      \"USERNAME\" : \"giampaolo.grieco+user2@gmail.com\",\r\n      \"PASSWORD\" : \"definitive\"\r\n   },\r\n   \"AuthFlow\" : \"USER_PASSWORD_AUTH\",\r\n   \"ClientId\" : \"5di40vkm51np6oea341c9emag3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://cognito-idp.us-west-1.amazonaws.com/",
+					"protocol": "https",
+					"host": [
+						"cognito-idp",
+						"us-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMessages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f3c51b8-5295-436b-ab85-fecd91e4c838",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "90a3b588-0514-4b0f-a026-524893f62dcf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "{{IdToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-snsk-page-Limit",
+						"value": "0",
+						"type": "text"
+					},
+					{
+						"key": "x-snsk-pagination.LastEvaluatedKey",
+						"value": "49b6e961-cd9f-4ea8-9850-159025f2e03d;9223370425955465354;OK",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages",
+					"protocol": "https",
+					"host": [
+						"q5un72u80j",
+						"execute-api",
+						"us-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostMessage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "529d2814-e189-4334-9f76-e828f3d09e7b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "36e41f16-15d8-4a95-a614-882414b1fcec",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "{{IdToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"message\": \"This new Social is very cool!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages",
+					"protocol": "https",
+					"host": [
+						"q5un72u80j",
+						"execute-api",
+						"us-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

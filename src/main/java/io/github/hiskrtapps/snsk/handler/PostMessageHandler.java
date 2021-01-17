@@ -48,7 +48,7 @@ public class PostMessageHandler implements RequestHandler<Map<Object, Object>, O
         message.setRecentness(MAX_VALUE - recentness);
         message.setMessage(new JSONObject(jInput.getString("body")).getString("message"));
         message.setCreatedAt(ISO_DATE_TIME.format(now));
-        message.setUserId(retrieveUserId(jInput.getJSONObject("headers").getString("authorization")));
+        message.setUserId(retrieveUserId(jInput.getJSONObject("headers").getString("Authorization")));
         message.setStatus("OK");
         return message;
     }

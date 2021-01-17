@@ -32,7 +32,7 @@ public class PostMessageHandler implements RequestHandler<Map<Object, Object>, O
     private Object response() {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        return new GatewayResponse("", headers, 200);
+        return new GatewayResponse("{\"result\" : \"ok\"}", headers, 200);
     }
 
     private void saveMessage(final Message message) {

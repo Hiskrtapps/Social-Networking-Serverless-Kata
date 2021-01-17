@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
 import static java.lang.Integer.parseInt;
@@ -38,7 +37,7 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
     private String buildBody(ScanResultPage<Message> result) {
         final JSONArray ja = new JSONArray();
         for (final Message message : result.getResults()) {
-            ja.put(buildResultItem(message));
+            ja.put(new JSONObject(message));
         }
         return ja.toString();
     }
@@ -53,11 +52,6 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
             headers.put(LAST_EVALUATED_KEY_HEADER, join(";", id, recentness, status));
         }
         return headers;
-    }
-
-    private JSONObject buildResultItem(Message message) {
-        final JSONObject jMessage = new JSONObject(message);
-        return jMessage;
     }
 
     private DynamoDBScanExpression buildScanExpression(Map<Object, Object> input) {

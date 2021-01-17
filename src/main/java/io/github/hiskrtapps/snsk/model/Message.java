@@ -28,6 +28,9 @@ public class Message {
     @DynamoDBAttribute
     private String status;
 
+    public Message() {
+    }
+
     public Message(String id, Long recentness, String userId, String createdAt, String message, String status) {
         this.id = id;
         this.recentness = recentness;

@@ -37,8 +37,9 @@ public class GetMessagesHandler implements RequestHandler<Map<Object, Object>, O
 
     private String buildBody(ScanResultPage<Message> result) {
         final JSONArray ja = new JSONArray();
-        for (final Message message : result.getResults()) {
-            ja.put(new JSONObject(message));
+        for (final Message m : result.getResults()) {
+            final Message responseMessage = new Message(m.getId(), null, m.getUserId(), m.getCreatedAt(), m.getMessage(), null);
+            ja.put(new JSONObject(responseMessage));
         }
         return ja.toString();
     }

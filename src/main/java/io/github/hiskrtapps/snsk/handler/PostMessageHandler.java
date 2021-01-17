@@ -1,7 +1,6 @@
 package io.github.hiskrtapps.snsk.handler;
 
 import io.github.hiskrtapps.snsk.model.Message;
-import io.github.hiskrtapps.snsk.model.MessageBackup;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 
@@ -25,7 +24,6 @@ public final class PostMessageHandler extends AbstractMessageHandler<Message> {
     protected final Message execute(final Map<Object, Object> input) {
         final Message message = buildMessage(input);
         dynamoDB().save(message);
-        dynamoDB().save(buildMessageBackup(message));
         return message;
     }
 
@@ -52,16 +50,6 @@ public final class PostMessageHandler extends AbstractMessageHandler<Message> {
         message.setUserId(retrieveUserId(jInput.getJSONObject("headers").getString("Authorization")));
         message.setStatus("OK");
         return message;
-    }
-
-    private MessageBackup buildMessageBackup(final Message message) {
-        final MessageBackup messageBackup = new MessageBackup();
-        messageBackup.setId(message.getId());
-        messageBackup.setMessage(message.getMessage());
-        messageBackup.setCreatedAt(message.getCreatedAt());
-        messageBackup.setUserId(message.getUserId());
-        messageBackup.setStatus(message.getStatus());
-        return messageBackup;
     }
 
     private String retrieveUserId(final String token) {

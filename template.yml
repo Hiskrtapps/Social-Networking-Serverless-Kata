@@ -17,7 +17,7 @@ Parameters:
 
 Resources:
 
-  SNSKApi:
+  SNSKSecuredApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
@@ -44,7 +44,7 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref SNSKApi
+            RestApiId: !Ref SNSKSecuredApi
             Path: /comments/
             Method: get
   PostComment:
@@ -63,7 +63,7 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref SNSKApi
+            RestApiId: !Ref SNSKSecuredApi
             Path: /comments/
             Method: post
 

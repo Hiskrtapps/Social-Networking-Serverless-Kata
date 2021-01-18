@@ -136,13 +136,14 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
                   },
                   "ChallengeParameters": {}
            ```
+     > **_TEST REQUESTS:_** you can download the following [Postman Collection](https://raw.githubusercontent.com/Hiskrtapps/Social-Networking-Serverless-Kata/master/test-requests/SNSK.postman_collection.json) already containing the definition of the 3 request described above. It will be sufficient *send* the *InitiateAuth* request in the collection to execute the login; Any subsequent *GetMessages*/*PostMessage* request *send* will result to be automatically authorized
+     
      > **_TEST USERS:_** to perform the login call to Cognito login endpoint you can use one of the following test users already signed up in the User Pool:
      * "USERNAME" : *giampaolo.grieco+user1@gmail.com*; "PASSWORD" : *definitive*
      * "USERNAME" : *giampaolo.grieco+user2@gmail.com*; "PASSWORD" : *definitive*
      * "USERNAME" : *giampaolo.grieco+user3@gmail.com*; "PASSWORD" : *definitive*
+
 ----
-     > **_TEST REQUESTS:_** you can download the following [Postman Collection](https://raw.githubusercontent.com/Hiskrtapps/Social-Networking-Serverless-Kata/master/test-requests/SNSK.postman_collection.json) already containing the definition of the 3 request described above.
-     It will be sufficient *snd* the *InitiateAuth* request in the collection to execute the login; Any subsequent *GetMessages*/*PostMessage* request *send* will result to be automatically authorized
 
 
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.

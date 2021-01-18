@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Handler for requests to Lambda function.
  */
-public final class PostMessageHandler extends AbstractMessageHandler<Message> {
+public final class PostMessageHandler extends MessageRestHandler<Message> {
 
     @Override
     protected final Message execute(final Map<Object, Object> input) {

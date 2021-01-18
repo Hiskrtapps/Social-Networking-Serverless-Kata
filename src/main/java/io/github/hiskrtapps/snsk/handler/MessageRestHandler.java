@@ -13,7 +13,7 @@ import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.stan
 /**
  * Handler for requests to Lambda function.
  */
-public abstract class AbstractMessageHandler<O> implements RequestHandler<Map<Object, Object>, Object> {
+public abstract class MessageRestHandler<O> implements RequestHandler<Map<Object, Object>, Object> {
 
     public final Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);

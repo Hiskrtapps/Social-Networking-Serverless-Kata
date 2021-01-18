@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Handler for requests to Lambda function.
  */
-public final class GetMessagesHandler extends AbstractMessageHandler<ScanResultPage<Message>> {
+public final class GetMessagesHandler extends MessageRestHandler<ScanResultPage<Message>> {
 
     private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
 

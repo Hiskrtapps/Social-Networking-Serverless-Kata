@@ -152,11 +152,8 @@ Following the diagram describing the solution architecture.
 #### Services&Flows Description ####
 1. Authentication call to ```AWS Cognito```
 2. REST call to endpoint exposed by ```AWS API Gateway```
-3. The proper ```AWS Lambda Function``` (*PostComment* or *GetComments*)is invoked (*PostComment* or *GetComments*)
-4. Querying/Storing data in ```AWS DynamoDB```. The result is returned to the caller. 
+3. The proper ```AWS Lambda Function``` is invoked (*PostComment* or *GetComments*)
+4. Querying/Storing data in ```AWS DynamoDB```. The result is returned to the caller.  
    **Asynchronously**, in case a new record is inserted a ```DynamoDB Stream``` is generated.
 5. **Asynchronously** the ```AWS Lambda Function``` responsible to handle messages backup (*BackupComments*) is invoked.
-6.
-
-This Lambda represent a plugin point in which it will be possible in the future to trigger other different service (for example to store the information of all inserted messages for analitycs' purposes).
-
+6. The *BackupComments* represent an **Architectural Plugin Point** in which it will be possible in the future to trigger other different service (for example to store the information of all inserted messages for analitycs' purposes).

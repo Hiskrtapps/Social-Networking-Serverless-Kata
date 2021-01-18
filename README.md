@@ -60,7 +60,7 @@ It exposes 2 REST APIs:
            ```
      > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
      
-     > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token*
+     > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token* in the ```Authorization``` header
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
          * headers:
@@ -104,6 +104,40 @@ It exposes 2 REST APIs:
        * if this header is not passed the selection start form the first element (the more recently inserted)
        * if the value from a previous call is passed the selection start form the next element starting from the one referenced by the key
      
+In addition the Cognito Login HTTP API should be call to perform the login and retrieve the *id_token*:
+ * POST https://cognito-idp.us-west-1.amazonaws.com/
+     * request:
+         * headers:
+           * ```Content-Type```: application/x-amz-json-1.1
+           * ```x-amz-target```: AWSCognitoIdentityProviderService.InitiateAuth
+         * body:
+            ```
+            {
+               "AuthParameters" : {
+                  "USERNAME" : *string*,
+                  "PASSWORD" : *string*
+               },
+               "AuthFlow" : "USER_PASSWORD_AUTH",
+               "ClientId" : "5di40vkm51np6oea341c9emag3"
+            }
+            ```
+     * response
+         * body:
+           ```
+           {
+              {
+                  "AuthenticationResult": {
+                      "AccessToken": *string*,
+                      "ExpiresIn": 3600,
+                      "IdToken": *string*,
+                      "RefreshToken": *string*,
+                      "TokenType": "Bearer"
+                  },
+                  "ChallengeParameters": {}
+           ```
+     > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+
+
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
 
 The api redirects the calls to 2 AWS Lambdas written in java (one to post a message and one to read the messages).

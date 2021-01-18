@@ -123,7 +123,7 @@
 						"type": "text"
 					},
 					{
-						"key": "x-snsk-pagination.LastEvaluatedKey",
+						"key": "x-snsk-pagination-LastEvaluatedKey",
 						"value": "49b6e961-cd9f-4ea8-9850-159025f2e03d;9223370425955465354;OK",
 						"type": "text",
 						"disabled": true

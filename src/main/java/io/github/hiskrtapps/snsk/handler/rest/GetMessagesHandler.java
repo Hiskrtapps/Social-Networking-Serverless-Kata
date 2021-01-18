@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 public final class GetMessagesHandler extends MessageRestHandler<ScanResultPage<Message>> {
 
-    private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination.LastEvaluatedKey";
+    private static final String LAST_EVALUATED_KEY_HEADER = "x-snsk-pagination-LastEvaluatedKey";
 
     private static final String PAGE_LIMIT_HEADER = "x-snsk-page-Limit";
 

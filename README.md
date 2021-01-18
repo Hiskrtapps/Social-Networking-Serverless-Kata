@@ -58,7 +58,7 @@ It exposes 2 REST APIs:
                "userId": "giampaolo.grieco+user2@gmail.com"
            }
            ```
-     > **_NOTE:_** the userId is not passed as an input in the body but it is retained from the ```id-token```
+     > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token*
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
          * headers:
@@ -92,10 +92,13 @@ It exposes 2 REST APIs:
                }
              ]
              ```
-     > **_NOTE:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
-     ```x-snsk-page-Limit```: is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
-                              if this header is not passeg the default value is used (10)
-                              if the value 0 is passed the pagination will be automatically disabled and all the elements are returned
+     > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
+     * ```x-snsk-page-Limit```: it is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
+       * if this header is not passed the default value is used (10)
+       * if the value 0 is passed the pagination will be automatically disabled and all the elements are returned
+     * ```x-snsk-pagination.LastEvaluatedKey```: it is the key of the last element returned in a previous endpoint call in which the pagination was enabled
+       * if this header is not passed the selection start form the first element (the more recently inserted)
+       * if the value from a previous call is passed the selection start form the next element starting from the one referenced by the key
      
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
 

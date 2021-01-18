@@ -36,8 +36,57 @@ Application Overview
 
 The application is implementing the Scenarios described in the [requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
 
-It exposes 2 REST APIs (through the AWS API Gateway service) that permits a user to post a new message and to read all the messages of all the users.
-
+It exposes 2 REST APIs:
+ * POST https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
+   * body:
+      ```
+      {
+         "message": "this is the message I am posting" 
+      }
+      ```
+   * headers:
+     * Content-Type: application/json
+     * Authorization: ```cognito-id-token```
+   * result body (the inserted element):
+      ```
+      {
+          "createdAt": "2021-01-18T12:55:07.837117",
+          "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+          "message": "this is the message I am posting",
+          "userId": "giampaolo.grieco+user2@gmail.com"
+      }
+      ```
+   > **_NOTE:_** the userId is not passed as an input in the body but it is retained from the Authorization token passed in the header
+ * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
+   * headers:
+     * Content-Type: application/json
+     * Authorization: ```cognito-id-token```
+     * x-snsk-page-Limit: ```pageLimit```
+     * x-snsk-pagination.LastEvaluatedKey: ```lastEvaluatedKey```
+   * result body (the inserted element):
+      ```
+      [
+        {
+            "createdAt": "2021-01-18T12:55:07.837117",
+            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+            "message": "this is the message I am posting",
+            "userId": "giampaolo.grieco+user2@gmail.com"
+        },
+        {
+            "createdAt": "2021-01-18T12:55:07.837117",
+            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+            "message": "this is the message I am posting",
+            "userId": "giampaolo.grieco+user2@gmail.com"
+        },
+        {
+            "createdAt": "2021-01-18T12:55:07.837117",
+            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+            "message": "this is the message I am posting",
+            "userId": "giampaolo.grieco+user2@gmail.com"
+        }
+      ]
+      ```
+     
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
 
 The api redirects the calls to 2 AWS Lambdas written in java (one to post a message and one to read the messages).

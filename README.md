@@ -1,4 +1,4 @@
-# Social Networking Serverless Kata (POC) #
+# Social Networking Serverless Kata solution (POC) #
 
 Serverless-based Social Setworking Spplication satisfying the requirements expressed here:
 https://github.com/petecocoon/Social-Networking-Serverless-Kata
@@ -146,9 +146,12 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
 ----
 
 ### Internal Architecture ###
+Following the diagram describing the solution architecture.
 ![alt text](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/SNSK%20Cloud%20Architecture.jpg?raw=true)
 
-AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
+#### Services&Flows Description ####
+1. Authentication call to ```AWS Cognito```
+2. 
 
 The api redirects the calls to 2 AWS Lambdas written in java (one to post a message and one to read the messages).
 

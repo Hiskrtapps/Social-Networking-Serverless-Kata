@@ -59,6 +59,7 @@ It exposes 2 REST APIs:
            }
            ```
      > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+     
      > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token*
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
@@ -94,6 +95,7 @@ It exposes 2 REST APIs:
              ]
              ```
      > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+     
      > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
      * ```x-snsk-page-Limit```: it is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
        * if this header is not passed the default value is used (10)

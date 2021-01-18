@@ -67,10 +67,10 @@ Resources:
             Path: /messages/
             Method: post
 
-  BackuptMessage:
+  BackupMessage:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-BackuptMessage'
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-BackupMessage'
       Handler: io.github.hiskrtapps.snsk.handler.stream.BackupMessageHandler
       Runtime: java11
       MemorySize: 512

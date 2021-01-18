@@ -103,7 +103,7 @@ The application exposes 2 REST APIs:
      * ```x-snsk-pagination.LastEvaluatedKey```: it is the key of the last element returned in a previous endpoint call in which the pagination was enabled
        * if this header is not passed the selection start form the first element (the more recently inserted)
        * if the value from a previous call is passed the selection start form the next element starting from the one referenced by the key
-
+----
 #### Cognito APIs ####
 In addition the Cognito Login HTTP API should be call to perform the login and retrieve the *id_token*:
  * POST https://cognito-idp.us-west-1.amazonaws.com/
@@ -144,6 +144,8 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
      * "USERNAME" : *giampaolo.grieco+user3@gmail.com*; "PASSWORD" : *definitive*
 
 ----
+
+### Internal Architecture ###
 
 
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.

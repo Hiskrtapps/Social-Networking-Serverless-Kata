@@ -38,54 +38,64 @@ The application is implementing the Scenarios described in the [requirements](ht
 
 It exposes 2 REST APIs:
  * POST https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
-   * body:
-      ```
-      {
-         "message": "this is the message I am posting" 
-      }
-      ```
-   * headers:
-     * Content-Type: application/json
-     * Authorization: ```cognito-id-token```
-   * result body (the inserted element):
-      ```
-      {
-          "createdAt": "2021-01-18T12:55:07.837117",
-          "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
-          "message": "this is the message I am posting",
-          "userId": "giampaolo.grieco+user2@gmail.com"
-      }
-      ```
-   > **_NOTE:_** the userId is not passed as an input in the body but it is retained from the Authorization token passed in the header
+     * request:
+         * headers:
+           * ```Content-Type```: application/json
+           * ```Authorization```: *id-token*
+         * body:
+            ```
+            {
+               "message": "this is the message I am posting" 
+            }
+            ```
+     * response (example)
+         * body:
+           ```
+           {
+               "createdAt": "2021-01-18T12:55:07.837117",
+               "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+               "message": "this is the message I am posting",
+               "userId": "giampaolo.grieco+user2@gmail.com"
+           }
+           ```
+     > **_NOTE:_** the userId is not passed as an input in the body but it is retained from the ```id-token```
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
-   * headers:
-     * Content-Type: application/json
-     * Authorization: ```cognito-id-token```
-     * x-snsk-page-Limit: ```pageLimit```
-     * x-snsk-pagination.LastEvaluatedKey: ```lastEvaluatedKey```
-   * result body (the inserted element):
-      ```
-      [
-        {
-            "createdAt": "2021-01-18T12:55:07.837117",
-            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
-            "message": "this is the message I am posting",
-            "userId": "giampaolo.grieco+user2@gmail.com"
-        },
-        {
-            "createdAt": "2021-01-18T12:55:07.837117",
-            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
-            "message": "this is the message I am posting",
-            "userId": "giampaolo.grieco+user2@gmail.com"
-        },
-        {
-            "createdAt": "2021-01-18T12:55:07.837117",
-            "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
-            "message": "this is the message I am posting",
-            "userId": "giampaolo.grieco+user2@gmail.com"
-        }
-      ]
-      ```
+     * request:
+         * headers:
+             * ```Content-Type```: application/json
+             * ```Authorization```: *id-token*
+             * ```x-snsk-page-Limit```: *number*
+             * ```x-snsk-pagination.LastEvaluatedKey```: *string*
+     * response (example):
+         * headers:
+             * ```x-snsk-pagination.LastEvaluatedKey```: *string*
+         * body (example):
+             ```
+             [
+               {
+                   "createdAt": "2021-01-18T12:55:07.837117",
+                   "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+                   "message": "this is the message I am posting",
+                   "userId": "giampaolo.grieco+user2@gmail.com"
+               },
+               {
+                   "createdAt": "2021-01-18T12:55:07.837117",
+                   "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+                   "message": "this is the message I am posting",
+                   "userId": "giampaolo.grieco+user2@gmail.com"
+               },
+               {
+                   "createdAt": "2021-01-18T12:55:07.837117",
+                   "id": "3cc01f97-642b-4560-bfd5-388a1aea9c77",
+                   "message": "this is the message I am posting",
+                   "userId": "giampaolo.grieco+user2@gmail.com"
+               }
+             ]
+             ```
+     > **_NOTE:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
+     ```x-snsk-page-Limit```: is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
+                              if this header is not passeg the default value is used (10)
+                              if the value 0 is passed the pagination will be automatically disabled and all the elements are returned
      
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
 

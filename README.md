@@ -1,10 +1,9 @@
-Social Networking Serverless Kata (POC)
-==============================================
+# Social Networking Serverless Kata (POC) #
 
 Serverless-based Social Setworking Spplication satisfying the requirements expressed here:
 https://github.com/petecocoon/Social-Networking-Serverless-Kata
 
-What's Here
+## What's Here ##
 -----------
 
 This repository includes:
@@ -22,8 +21,7 @@ This repository includes:
 * docs folder - this directory contains the images included in this readem.MD file and any other useful document
 * test-requests - this directory contains the HTTP requests in the form of Postman collection that can be used to test the documentation
 
-Application Build & Deploy
-------------------
+## Application Build & Deploy ##
 
 Any push on the master branch of this repository will automatically trigger the [CI/CD pipeline](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/pipeline.PNG?raw=true) that will automatically:
  * download the latest version of the software from the master branch of this repository
@@ -31,12 +29,14 @@ Any push on the master branch of this repository will automatically trigger the 
  * deploy all the resources as described in the template.yaml
 
 
-Application Overview
-------------------
+## Application Overview## 
 
 The application is implementing the Scenarios described in the [requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
 
-It exposes 2 REST APIs:
+### Public APIs ###
+
+#### Application APIs ####
+The application exposes 2 REST APIs:
  * POST https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
          * headers:
@@ -103,7 +103,8 @@ It exposes 2 REST APIs:
      * ```x-snsk-pagination.LastEvaluatedKey```: it is the key of the last element returned in a previous endpoint call in which the pagination was enabled
        * if this header is not passed the selection start form the first element (the more recently inserted)
        * if the value from a previous call is passed the selection start form the next element starting from the one referenced by the key
-     
+
+#### Cognito APIs ####
 In addition the Cognito Login HTTP API should be call to perform the login and retrieve the *id_token*:
  * POST https://cognito-idp.us-west-1.amazonaws.com/
      * request:

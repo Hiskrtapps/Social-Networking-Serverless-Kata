@@ -7,7 +7,7 @@ https://github.com/petecocoon/Social-Networking-Serverless-Kata
 What's Here
 -----------
 
-This sample includes:
+This repository includes:
 
 * README.md - this file
 * buildspec.yml - this file is used by AWS CodeBuild to build the web
@@ -19,11 +19,13 @@ This sample includes:
   by AWS CloudFormation to deploy your application to AWS Lambda and Amazon API
   Gateway.
 * template-configuration.json - this file contains the project ARN with placeholders used for tagging resources with the project ID
+* docs folder - this directory contains the images included in this readem.MD file and any other useful document
+* test-requests - this directory contains the HTTP requests in the form of Postman collection that can be used to test the documentation
 
 Application Build & Deploy
 ------------------
 
-Any push on the master branch of this repository will trigger the CI/CD pipeline that will automatically:
+Any push on the master branch of this repository will automatically trigger the [CI/CD pipeline](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/docs/pipeline.PNG) that will automatically:
  * download the latest version of the software from the master branch of this repository
  * build the software of which the AWS Lambda logic is written
  * deploy all the resources as described in the template.yaml

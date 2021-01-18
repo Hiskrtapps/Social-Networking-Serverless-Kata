@@ -71,7 +71,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-BackupMessage'
-      Handler: io.github.hiskrtapps.snsk.handler.stream.BackupMessageHandler
+      Handler: io.github.hiskrtapps.snsk.handler.stream.BackupMessagesHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20

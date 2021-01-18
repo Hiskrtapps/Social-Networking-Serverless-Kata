@@ -18,10 +18,13 @@ import static java.lang.String.join;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
- * Handler for requests to Lambda function.
+ * Handler for event requests to Lambda function.
  */
 public final class BackupMessagesHandler implements RequestHandler<Object, Object> {
 
+    /**
+     * not implemented; just logging the incoming events
+     */
     @Override
     public Object handleRequest(Object input, Context context) {
         context.getLogger().log(input.toString());

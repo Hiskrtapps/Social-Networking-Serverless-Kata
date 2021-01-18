@@ -11,22 +11,37 @@ import java.util.Map;
 import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder.standard;
 
 /**
- * Handler for requests to Lambda function.
+ * Handler for REST requests to Lambda function.
  */
 public abstract class MessageRestHandler<O> implements RequestHandler<Map<Object, Object>, Object> {
 
+    /**
+     * Main handler method providing common nehvior for all the incoming requests
+     */
     public final Object handleRequest(final Map<Object, Object> input, final Context context) {
         context.getLogger().log("Input: " + input);
         final O output = execute(input);
         return new GatewayResponse(buildBody(output), buildHeaders(output), 200);
     }
 
+    /**
+     * main logic here
+     */
     protected abstract O execute(Map<Object, Object> input);
 
+    /**
+     * build the body string to be returned
+     */
     protected abstract String buildBody(O output);
 
+    /**
+     * build the headers to be returned
+     */
     protected abstract Map<String, String> buildHeaders(O output);
 
+    /**
+     * @return the DynamoDBMapper instqnce for qll the subclasses
+     */
     protected final DynamoDBMapper dynamoDB() {
         return new DynamoDBMapper(standard().build());
     }
@@ -61,6 +76,9 @@ public abstract class MessageRestHandler<O> implements RequestHandler<Map<Object
         }
     }
 
+    /**
+     * model items to be returned in the responses. It is a subset of the Message model class
+     */
     public static final class ResultMessage {
 
         private final String id;

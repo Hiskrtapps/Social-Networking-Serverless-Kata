@@ -16,7 +16,9 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
- * Handler for requests to Lambda function.
+ * Handler for POST requests to Lambda function.
+ *
+ * the responsability of this class is to store messages based on the input parameters. *
  */
 public final class PostMessageHandler extends MessageRestHandler<Message> {
 
@@ -39,6 +41,9 @@ public final class PostMessageHandler extends MessageRestHandler<Message> {
         return headers;
     }
 
+    /**
+     * it build a Message object to be stored starting from the input parameters
+     */
     private Message buildMessage(final Map<Object, Object> input) {
         final JSONObject jInput = new JSONObject(input);
         final LocalDateTime now = now();
@@ -52,6 +57,9 @@ public final class PostMessageHandler extends MessageRestHandler<Message> {
         return message;
     }
 
+    /**
+     * it extract the userId (email) from the Authorization idToken in input
+     */
     private String retrieveUserId(final String token) {
         return new JSONObject(new String(new Base64(true).decode(token.split("\\.")[1]))).getString("email");
     }

@@ -65,10 +65,10 @@ The application exposes 2 REST APIs:
              * ```Content-Type```: application/json
              * ```Authorization```: *id-token*
              * ```x-snsk-page-Limit```: *number*
-             * ```x-snsk-pagination.LastEvaluatedKey```: *string*
+             * ```x-snsk-pagination-LastEvaluatedKey```: *string*
      * response *(example)*:
          * headers:
-             * ```x-snsk-pagination.LastEvaluatedKey```: *string*
+             * ```x-snsk-pagination-LastEvaluatedKey```: *string*
          * body (example):
              ```
              [
@@ -96,14 +96,14 @@ The application exposes 2 REST APIs:
      
      > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination-LastEvaluatedKey```.
      * ```x-snsk-page-Limit```: it is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
-       * if this header is not passed the default value is used (10)
-       * if the value 0 is passed the pagination will be automatically disabled and all the elements are returned
-     * ```x-snsk-pagination.LastEvaluatedKey```: it is the key of the last element returned in a previous endpoint call in which the pagination was enabled
+       * if this header value is not passed the default value is used (10)
+       * if the value 0 is passed the pagination will be automatically disabled and all the elements are returned (DANGER!)
+     * ```x-snsk-pagination-LastEvaluatedKey```: it is the key of the last element returned in a previous endpoint call in which the pagination was enabled
        * if this header is not passed the selection start form the first element (the more recently inserted)
        * if the value from a previous call is passed the selection start form the next element starting from the one referenced by the key
 ----
 #### Cognito APIs ####
-In addition the Cognito Login HTTP API should be call to perform the login and retrieve the *id_token*:
+In addition to the *Application APIs*, the following Cognito API should be call to perform the login and retrieve the needed *id_token*:
  * POST https://cognito-idp.us-west-1.amazonaws.com/
      * request:
          * headers:
@@ -134,7 +134,7 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
                   },
                   "ChallengeParameters": {}
            ```
-     > **_TEST REQUESTS:_** you can download the following [Postman Collection](https://raw.githubusercontent.com/Hiskrtapps/Social-Networking-Serverless-Kata/master/test-requests/SNSK.postman_collection.json) already containing the definition of the 3 request described above. It will be sufficient *send* the *InitiateAuth* request in the collection to execute the login; Any subsequent *GetMessages*/*PostMessage* request *send* will result to be automatically authorized
+     > **_TEST REQUESTS:_** you can download the following [Postman Collection](https://raw.githubusercontent.com/Hiskrtapps/Social-Networking-Serverless-Kata/master/test-requests/SNSK.postman_collection.json) already containing the definition of the 3 request described above. It will be sufficient *send* the *InitiateAuth* request in the collection to execute the login; Any subsequent *GetMessages*/*PostMessage* request *send* will result to be automatically authorized.
      
      > **_TEST USERS:_** to perform the login call to Cognito login endpoint you can use one of the following test users already signed up in the User Pool:
      * "USERNAME" : *giampaolo.grieco+user1@gmail.com*; "PASSWORD" : *definitive*
@@ -150,8 +150,8 @@ Following the diagram describing the solution architecture.
 #### Services&Flows Description ####
 1. Authentication call to ```AWS Cognito```
 2. REST call to endpoint exposed by ```AWS API Gateway```
-3. The proper ```AWS Lambda Function``` is invoked (*PostComment* or *GetComments*)
+3. The proper ```AWS Lambda Function``` (*PostComment* or *GetComments*) is invoked
 4. Querying/Storing data in ```AWS DynamoDB```. The result is returned to the caller.  
    **Asynchronously**, in case a new record is inserted a ```DynamoDB Stream``` is generated.
 5. **Asynchronously** the ```AWS Lambda Function``` responsible to handle messages backup (*BackupComments*) is invoked.
-6. The *BackupComments* represent an **Architectural Plugin Point** in which it will be possible in the future to trigger other different service (for example to store the information of all inserted messages for analitycs' purposes).
+6. The *BackupComments* ```AWS Lambda Function``` business logic _has not been implemented!_. It represent an **Architectural Plugin Point** in which it will be possible in the future to trigger other different service (for example to store the information of all inserted messages for _analitycs' purposes_).

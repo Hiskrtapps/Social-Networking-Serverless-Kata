@@ -146,7 +146,7 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
 ----
 
 ### Internal Architecture ###
-
+![alt text](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/SNSK%20Cloud%20Architecture.jpg?raw=true)
 
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.
 

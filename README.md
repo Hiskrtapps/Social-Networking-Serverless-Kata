@@ -4,7 +4,6 @@ Serverless-based Social Setworking Spplication satisfying the requirements expre
 https://github.com/petecocoon/Social-Networking-Serverless-Kata
 
 ## What's Here ##
------------
 
 This repository includes:
 

@@ -94,7 +94,7 @@ It exposes 2 REST APIs:
                }
              ]
              ```
-     > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+     > **_AUTHORIZATION:_** the ```Authorization``` header is filled by the id_token retrieved by a login call to Cognito login endpoint (see later)
      
      > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
      * ```x-snsk-page-Limit```: it is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
@@ -135,7 +135,7 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
                   },
                   "ChallengeParameters": {}
            ```
-     > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+     > **_AUTHORIZATION:_** the ```Authorization``` header is filled by the id_token retrieved by a login call to Cognito login endpoint (see later)
 
 
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.

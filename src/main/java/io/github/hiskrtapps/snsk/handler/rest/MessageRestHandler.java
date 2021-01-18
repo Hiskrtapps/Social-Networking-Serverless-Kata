@@ -1,4 +1,4 @@
-package io.github.hiskrtapps.snsk.handler;
+package io.github.hiskrtapps.snsk.handler.rest;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;

@@ -1,4 +1,4 @@
-package io.github.hiskrtapps.snsk.handler;
+package io.github.hiskrtapps.snsk.handler.rest;
 
 import io.github.hiskrtapps.snsk.model.Message;
 import org.apache.commons.codec.binary.Base64;

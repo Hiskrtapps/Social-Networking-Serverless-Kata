@@ -32,7 +32,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetMessages'
-      Handler: io.github.hiskrtapps.snsk.handler.GetMessagesHandler
+      Handler: io.github.hiskrtapps.snsk.handler.rest.GetMessagesHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20
@@ -51,7 +51,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-PostMessage'
-      Handler: io.github.hiskrtapps.snsk.handler.PostMessageHandler
+      Handler: io.github.hiskrtapps.snsk.handler.rest.PostMessageHandler
       Runtime: java11
       MemorySize: 512
       Timeout: 20

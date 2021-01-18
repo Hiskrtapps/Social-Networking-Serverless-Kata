@@ -144,7 +144,8 @@ In addition to the *Application APIs*, the following Cognito API should be call 
 ----
 
 ### Internal Architecture ###
-Following the diagram describing the solution architecture.
+Following the diagram describing the solution architecture.  
+
 ![alt text](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/SNSK%20Cloud%20Architecture.jpg?raw=true)
 
 #### Services&Flows Description ####

@@ -135,7 +135,10 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
                   },
                   "ChallengeParameters": {}
            ```
-     > **_AUTHORIZATION:_** the ```Authorization``` header is filled by the id_token retrieved by a login call to Cognito login endpoint (see later)
+     > **_TEST USERS:_** to perrform the login call to Cognito login endpoint you can use one of the following test users already signed up in the User Pool:
+     * "USERNAME" : *giampaolo.grieco+user1@gmail.com*; "PASSWORD" : *definitive*
+     * "USERNAME" : *giampaolo.grieco+user2@gmail.com*; "PASSWORD" : *definitive*
+     * "USERNAME" : *giampaolo.grieco+user3@gmail.com*; "PASSWORD" : *definitive*
 
 
 AWS Cognito is used to authorize the 2 endpoints so that it is possible to use the application functionalities only after a signup in the created ser Pool.

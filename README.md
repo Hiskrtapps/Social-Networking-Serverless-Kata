@@ -28,7 +28,7 @@ Any push on the master branch of this repository will automatically trigger the 
  * deploy all the resources as described in the template.yaml
 
 
-## Application Overview## 
+## Application Overview ## 
 
 The application is implementing the Scenarios described in the [requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
 

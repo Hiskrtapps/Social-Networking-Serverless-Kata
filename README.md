@@ -1,36 +1,34 @@
 # Social Networking Serverless Kata solution (POC) #
 
-Serverless-based Social Setworking Spplication satisfying the requirements expressed here:
-https://github.com/petecocoon/Social-Networking-Serverless-Kata
+Serverless-based Social Setworking Application satisfying [these requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
 
 ## What's Here ##
 
 This repository includes:
 
 * README.md - this file
-* buildspec.yml - this file is used by AWS CodeBuild to build the web
+* buildspec.yml - this file is used by ```AWS CodeBuild``` to build the web
   service
 * pom.xml - this file is the Maven Project Object Model for the web service
-* src/main - this directory contains your Java service source files
-* src/test - this directory contains your Java service unit test files
-* template.yml - this file contains the AWS Serverless Application Model (AWS SAM) used
-  by AWS CloudFormation to deploy your application to AWS Lambda and Amazon API
+* src - this directory contains your Java source files
+* template.yml - this file contains the *AWS Serverless Application Model (AWS SAM)* used
+  by ```AWS CloudFormation``` to deploy your application to AWS Lambda and Amazon API
   Gateway.
 * template-configuration.json - this file contains the project ARN with placeholders used for tagging resources with the project ID
-* docs folder - this directory contains the images included in this readem.MD file and any other useful document
-* test-requests - this directory contains the HTTP requests in the form of Postman collection that can be used to test the documentation
+* /docs folder - this directory contains the images included in this *readem.MD* file and any other useful document
+* /test-requests folder - this directory contains the HTTP requests in the shape of *Postman* collection that can be used to test the documentation
 
 ## Application Build & Deploy ##
 
-Any push on the master branch of this repository will automatically trigger the [CI/CD pipeline](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/pipeline.PNG?raw=true) that will automatically:
+Any push on the *master* branch of this repository will automatically trigger the ```AWS CodePipeline``` [CI/CD pipeline](https://github.com/Hiskrtapps/Social-Networking-Serverless-Kata/blob/master/docs/pipeline.PNG?raw=true) that will automatically:
  * download the latest version of the software from the master branch of this repository
- * build the software of which the AWS Lambda logic is written
- * deploy all the resources as described in the template.yaml
+ * build the software of which the ```AWS Lambda``` logic is written
+ * deploy all the resources as described in the *template.yaml*
 
 
 ## Application Overview ## 
 
-The application is implementing the Scenarios described in the [requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
+The application is implementing the scenarios described in the [requirements](https://github.com/petecocoon/Social-Networking-Serverless-Kata).
 
 ### Public APIs ###
 
@@ -57,9 +55,9 @@ The application exposes 2 REST APIs:
                "userId": "giampaolo.grieco+user2@gmail.com"
            }
            ```
-     > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
+     > **_AUTHORIZATION:_** the ```Authorization``` header value is retrieved by a login call to Cognito login endpoint (see later)
      
-     > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token* in the ```Authorization``` header
+     > **_USER INFORMATION:_** the *userId* is not passed as an input but it is retained from the *id-token* in the ```Authorization``` header
 ----
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
@@ -68,7 +66,7 @@ The application exposes 2 REST APIs:
              * ```Authorization```: *id-token*
              * ```x-snsk-page-Limit```: *number*
              * ```x-snsk-pagination.LastEvaluatedKey```: *string*
-     * response (example):
+     * response *(example)*:
          * headers:
              * ```x-snsk-pagination.LastEvaluatedKey```: *string*
          * body (example):
@@ -94,9 +92,9 @@ The application exposes 2 REST APIs:
                }
              ]
              ```
-     > **_AUTHORIZATION:_** the ```Authorization``` header is filled by the id_token retrieved by a login call to Cognito login endpoint (see later)
+     > **_AUTHORIZATION:_** the ```Authorization``` header value is retrieved by a login call to Cognito login endpoint (see later)
      
-     > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination.LastEvaluatedKey```.
+     > **_PAGINATION:_** to be scalable this endpoint offers pagination capabilities. They are controlled by the *optional* headers ```x-snsk-page-Limit``` and ```x-snsk-pagination-LastEvaluatedKey```.
      * ```x-snsk-page-Limit```: it is the maximum number of values per page that will be returned (the last page will containing only the remainng elements);
        * if this header is not passed the default value is used (10)
        * if the value 0 is passed the pagination will be automatically disabled and all the elements are returned

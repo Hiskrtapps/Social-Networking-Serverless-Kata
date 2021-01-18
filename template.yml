@@ -67,6 +67,26 @@ Resources:
             Path: /messages/
             Method: post
 
+  BackuptMessage:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-BackuptMessage'
+      Handler: io.github.hiskrtapps.snsk.handler.stream.PostMessageHandler
+      Runtime: java11
+      MemorySize: 512
+      Timeout: 20
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        Stream:
+          Type: DynamoDB
+          Properties:
+            Stream: !GetAtt Message.StreamArn
+            BatchSize: 100
+            StartingPosition: TRIM_HORIZON
+
   Message:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -92,6 +112,8 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
       BillingMode: PAY_PER_REQUEST
 
   SNSKUserPool:

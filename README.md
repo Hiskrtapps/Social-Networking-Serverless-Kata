@@ -60,6 +60,7 @@ The application exposes 2 REST APIs:
      > **_AUTHORIZATION:_** the ```Authorization``` retrieve by a login call to Cognito login endpoint (see later)
      
      > **_USER INFORMATION:_** the userId is not passed as an input in the body but it is retained from the *id-token* in the ```Authorization``` header
+----
  * GET https://q5un72u80j.execute-api.us-west-1.amazonaws.com/Prod/messages
      * request:
          * headers:
@@ -139,7 +140,7 @@ In addition the Cognito Login HTTP API should be call to perform the login and r
      * "USERNAME" : *giampaolo.grieco+user1@gmail.com*; "PASSWORD" : *definitive*
      * "USERNAME" : *giampaolo.grieco+user2@gmail.com*; "PASSWORD" : *definitive*
      * "USERNAME" : *giampaolo.grieco+user3@gmail.com*; "PASSWORD" : *definitive*
-     
+----
      > **_TEST REQUESTS:_** you can download the following [Postman Collection](https://raw.githubusercontent.com/Hiskrtapps/Social-Networking-Serverless-Kata/master/test-requests/SNSK.postman_collection.json) already containing the definition of the 3 request described above.
      It will be sufficient *snd* the *InitiateAuth* request in the collection to execute the login; Any subsequent *GetMessages*/*PostMessage* request *send* will result to be automatically authorized
 

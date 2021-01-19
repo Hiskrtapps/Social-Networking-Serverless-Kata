@@ -155,4 +155,4 @@ Following the diagram describing the solution architecture.
 4. Querying/Storing data in ```AWS DynamoDB```. The result is returned to the caller.  
    **Asynchronously**, in case a new record is inserted a ```DynamoDB Stream``` is generated.
 5. **Asynchronously** the ```AWS Lambda Function``` responsible to handle messages backup (*BackupComments*) is invoked.
-6. The *BackupComments* ```AWS Lambda Function``` business logic *has not been implemented!* It represent an **Architectural Plugin Point** in which it will be possible in the future to trigger other different service (for example to store the information of all inserted messages for _analitycs' purposes_).
+6. The *BackupComments* ```AWS Lambda Function``` business logic *has not been implemented!* It represents an **Architectural Plugin Point** in which it will be possible, in the future, to trigger other different services (for example to store the information of all inserted messages for _analitycs' purposes_).
